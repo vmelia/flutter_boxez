@@ -1,27 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../extensions.dart';
 import '../types.dart';
-import '../widgets.dart';
 
 extension GameExtensions on Game {
-  List<Widget> convertBoxesIntoWidgets(Size screenSize)=> boxes
-      .map(
-        (box) => Positioned.fromRect(
-          rect: box.location.getRect(screenSize),
-          child: BoxWidget(box: box),
-        ),
-      )
-      .toList();
-      
-  Rect getRect(Location location, Size screenSize) {
-    final boxWidth = screenSize.shortestSide / Constants.gridSize;
-    final x = screenSize.width / 2 + location.x * boxWidth;
-    final y = screenSize.height / 2 + location.y * boxWidth;
-
-    return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
-  }
-
   MaterialColor getValidColour(Location location, MaterialColor proposedColour) {
     for (var i = 0; i < Constants.colours.length; i++) {
       final colourToCheck = _getColourFromOffset(proposedColour, i);
