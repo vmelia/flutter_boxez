@@ -41,7 +41,7 @@ extension GameExtensions on Game {
   }
 
   bool _isTheSameColour(Location location, MaterialColor colourToCheck) {
-    final colour = grid[location];
-    return colour != null && colour == colourToCheck;
+    final box = grid[location];
+    return box != null && box.colour == colourToCheck;
   }
 }

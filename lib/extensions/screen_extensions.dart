@@ -16,15 +16,15 @@ extension ScreenExtensions on Size {
       .map(
         (entry) => Positioned.fromRect(
           rect:getRect(entry.key),
-          child: BoxWidget(colour: entry.value),
+          child: BoxWidget(box: entry.value),
         ),
       )
       .toList();
 
-  Location? getTappedBox(Offset globalPosition, Game game) {
+  Box? getTappedBox(Offset globalPosition, Game game) {
     for (final entry in game.grid.entries) {
       final isHit = getRect(entry.key).contains(globalPosition);
-      if (isHit) return entry.key;
+      if (isHit) return entry.value;
     }
 
     return null;

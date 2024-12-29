@@ -16,9 +16,9 @@ class GameServiceImpl implements GameService {
       for (var y = -3; y <= 3; y++) {
         final location = Location(x, y);
         final proposedColour = randomService.colour;
-        final validColour = game.getValidColour(location, proposedColour);
+        final colour = game.getValidColour(location, proposedColour);
 
-        game.grid[location] = validColour;
+        game.grid[location] = Box(location: location, colour: colour);
       }
     }
   }

@@ -10,7 +10,7 @@ class DragServiceImpl implements DragService {
 
   late Size _screenSize;
   late Location? draggingLocation;
-  late MaterialColor? draggingColour;
+  late Box? draggingBox;
 
   @override
   void initialize(Size screenSize) => _screenSize = screenSize;
@@ -18,12 +18,12 @@ class DragServiceImpl implements DragService {
   @override
   void onPanStart(DragStartDetails details) {
     draggingLocation = null;
-    draggingColour = null;
+    draggingBox = null;
 
-    final location = _screenSize.getTappedBox(details.globalPosition, gameService.game);
-    if (location == null) return;
+    final box = _screenSize.getTappedBox(details.globalPosition, gameService.game);
+    if (box == null) return;
 
-    draggingColour = gameService.game.grid[location];
+    draggingBox = box;
   }
 
   @override
