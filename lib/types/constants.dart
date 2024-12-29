@@ -7,8 +7,8 @@ class Constants {
   static const int gridSize = gridEnd - gridStart + 1;
 
   // BoxWidgets.
-  static const double boxPadding = 5.0;
-  static const double boxRadius = 30.0;
+  static const double boxPadding = 4.0;
+  static const double boxRadius = 20.0;
 
   // Colours.
   static const List<MaterialColor> colours = <MaterialColor>[

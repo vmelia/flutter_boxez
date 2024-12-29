@@ -26,10 +26,8 @@ extension GameExtensions on Game {
     return true;
   }
 
-  bool _locationColourMatches(int x, int y, MaterialColor colourToCheck) {
-    final location = Location(x, y);
-    return _locationExists(Location(x, y)) && _isTheSameColour(location, colourToCheck);
-  }
+  bool _locationColourMatches(int x, int y, MaterialColor colourToCheck) =>
+      _locationExists(Location(x, y)) && _isTheSameColour(Location(x, y), colourToCheck);
 
   bool _locationExists(Location location) {
     if (location.x < Constants.gridStart) return false;
@@ -41,7 +39,15 @@ extension GameExtensions on Game {
   }
 
   bool _isTheSameColour(Location location, MaterialColor colourToCheck) {
-    final box = grid[location];
+    final box = _findByLocation(location);
     return box != null && box.colour == colourToCheck;
+  }
+
+  Box? _findByLocation(Location location) {
+    for (final box in boxes) {
+      if (box.location == location) return box;
+    }
+
+    return null;
   }
 }

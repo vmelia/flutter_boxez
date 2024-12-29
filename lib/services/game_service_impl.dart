@@ -5,12 +5,12 @@ import '../types.dart';
 class GameServiceImpl implements GameService {
   GameServiceImpl(this.randomService);
   final RandomService randomService;
-
+  
   final _game = Game();
 
   @override
   void createGame() {
-    _game.grid.clear();
+    _game.boxes.clear();
 
     for (var x = -3; x <= 3; x++) {
       for (var y = -3; y <= 3; y++) {
@@ -18,7 +18,7 @@ class GameServiceImpl implements GameService {
         final proposedColour = randomService.colour;
         final colour = game.getValidColour(location, proposedColour);
 
-        game.grid[location] = Box(location: location, colour: colour);
+        game.boxes.add(Box(location: location, colour: colour));
       }
     }
   }
