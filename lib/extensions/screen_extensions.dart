@@ -12,19 +12,19 @@ extension ScreenExtensions on Size {
     return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
   }
 
-  List<Widget> convertBoxesIntoWidgets(List<Box> boxes) => boxes
+  List<Widget> convertBoxesIntoWidgets(Game game) => game.grid.entries
       .map(
-        (box) => Positioned.fromRect(
-          rect:getRect(box.location),
-          child: BoxWidget(box: box),
+        (entry) => Positioned.fromRect(
+          rect:getRect(entry.key),
+          child: BoxWidget(colour: entry.value),
         ),
       )
       .toList();
 
-  Box? getTappedBox(Offset globalPosition, List<Box> boxes) {
-    for (final box in boxes) {
-      final isHit = box.getRect(this).contains(globalPosition);
-      if (isHit) return box;
+  Location? getTappedBox(Offset globalPosition, Game game) {
+    for (final entry in game.grid.entries) {
+      final isHit = getRect(entry.key).contains(globalPosition);
+      if (isHit) return entry.key;
     }
 
     return null;

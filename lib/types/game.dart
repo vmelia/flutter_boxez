@@ -1,14 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../types.dart';
 
 class Game extends Equatable {
-  final Map<Location, Box> _grid = {};
+  final Map<Location, MaterialColor> _grid = {};
 
-  Map<Location, Box> get grid => _grid;
-  List<Box> get boxes => _grid.values.toList();
-
-  void add(Location location, Box box) => _grid[location] = box;
+  Map<Location, MaterialColor> get grid => _grid;
 
   @override
   List<Object?> get props => [_grid];

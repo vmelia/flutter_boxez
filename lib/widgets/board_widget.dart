@@ -10,12 +10,12 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final widgets = screenSize.convertBoxesIntoWidgets(game.boxes);
+    final widgets = screenSize.convertBoxesIntoWidgets(game);
 
     return Scaffold(
       body: GestureDetector(
         onPanStart: (details) {
-          final box = screenSize.getTappedBox(details.globalPosition, game.boxes);
+          final box = screenSize.getTappedBox(details.globalPosition, game);
           if (box != null) {}
         },
         onPanUpdate: (details) {},

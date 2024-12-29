@@ -15,8 +15,7 @@ class GameServiceImpl implements GameService {
         final proposedColour = randomService.colour;
         final validColour = game.getValidColour(location, proposedColour);
 
-        final box = Box(location: location, colour: validColour);
-        game.add(location, box);
+        game.grid[location] = validColour;
       }
     }
 
