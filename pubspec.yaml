@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get_it: any  
+  flutter_bloc: any
   equatable: any
 
 dev_dependencies:

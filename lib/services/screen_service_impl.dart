@@ -4,14 +4,18 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class ScreenServiceImpl implements ScreenService {
-  ScreenServiceImpl({required this.screenSize});
-  final Size screenSize;
+  late Size _screenSize;
 
   @override
-  Rect getRect(Box box) {
-    final boxWidth = screenSize.shortestSide / Constants.gridSize;
-    final x = screenSize.width / 2 + box.location.x * boxWidth;
-    final y = screenSize.height / 2 + box.location.y * boxWidth;
+  void initialize({required Size screenSize}) {
+    _screenSize = screenSize;
+  }
+
+  @override
+  Rect getRect(Location location) {
+    final boxWidth = _screenSize.shortestSide / Constants.gridSize;
+    final x = _screenSize.width / 2 + location.x * boxWidth;
+    final y = _screenSize.height / 2 + location.y * boxWidth;
 
     return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
   }

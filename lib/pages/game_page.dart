@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
-import '../services.dart';
+import '../interfaces.dart';
 import '../widgets.dart';
 
 class GamePage extends StatelessWidget {
@@ -8,14 +9,14 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final boxes = GameServiceImpl(RandomServiceImpl()).createGame();
+    final screenService = GetIt.I<ScreenService>();
+    final gameService = GetIt.I<GameService>();
 
-    final screenSize = MediaQuery.of(context).size;
-    final screenService = ScreenServiceImpl(screenSize: screenSize);
+    final boxes = gameService.createGame();
     final widgets = boxes.values
         .map(
           (box) => Positioned.fromRect(
-            rect: screenService.getRect(box),
+            rect: screenService.getRect(box.location),
             child: BoxWidget(box: box),
           ),
         )
