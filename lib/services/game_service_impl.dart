@@ -6,9 +6,12 @@ class GameServiceImpl implements GameService {
   GameServiceImpl(this.randomService);
   final RandomService randomService;
 
+  final _game = Game();
+
   @override
-  Game createGame() {
-    final game = Game();
+  void createGame() {
+    _game.grid.clear();
+
     for (var x = -3; x <= 3; x++) {
       for (var y = -3; y <= 3; y++) {
         final location = Location(x, y);
@@ -18,7 +21,8 @@ class GameServiceImpl implements GameService {
         game.grid[location] = validColour;
       }
     }
-
-    return game;
   }
+
+  @override
+  Game get game => _game;
 }

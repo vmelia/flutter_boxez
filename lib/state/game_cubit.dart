@@ -19,7 +19,7 @@ class GameCubit extends Cubit<GameState> {
   final GameService gameService;
 
   void createGame() {
-    final game = gameService.createGame();
-    emit(GameState(game: game));
+    gameService.createGame();
+    emit(GameState(game: gameService.game));
   }
 }

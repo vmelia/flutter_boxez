@@ -1,5 +1,6 @@
 import '../types.dart';
 
 abstract class GameService {
-  Game createGame();
+  void createGame();
+  Game get game;
 }
