@@ -8,13 +8,11 @@ class BoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: EdgeInsets.all(Constants.boxPadding),
       child: Container(
-        width: 60,
-        height: 60,
         decoration: BoxDecoration(
           color: box.colour,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
         ),
       ),
     );

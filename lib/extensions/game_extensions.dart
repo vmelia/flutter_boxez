@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../types.dart';
 
-extension GameChecker on Map<Location, Box> {
+extension GameExtensions on Map<Location, Box> {
+  Rect getRect(Location location, Size screenSize) {
+    final boxWidth = screenSize.shortestSide / Constants.gridSize;
+    final x = screenSize.width / 2 + location.x * boxWidth;
+    final y = screenSize.height / 2 + location.y * boxWidth;
+
+    return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
+  }
+
   MaterialColor getValidColour(Location location, MaterialColor proposedColour) {
     for (var i = 0; i < Constants.colours.length; i++) {
       final colourToCheck = _getColourFromOffset(proposedColour, i);

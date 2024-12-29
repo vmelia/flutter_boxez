@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../interfaces.dart';
+import '../state.dart';
+import '../types.dart';
 import '../widgets.dart';
 
 class GamePage extends StatelessWidget {
@@ -9,21 +11,29 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenService = GetIt.I<ScreenService>();
-    final gameService = GetIt.I<GameService>();
+    final gameCubit = GetIt.I<GameCubit>();
+    return BlocProvider.value(
+      value: gameCubit..createGame(),
+      child: BlocBuilder<GameCubit, GameState>(
+        builder: (context, state) {
+          return _MainPageView(game: state.game);
+        },
+      ),
+    );
+  }
+}
 
-    final boxes = gameService.createGame();
-    final widgets = boxes.values
-        .map(
-          (box) => Positioned.fromRect(
-            rect: screenService.getRect(box.location),
-            child: BoxWidget(box: box),
-          ),
-        )
-        .toList();
+class _MainPageView extends StatelessWidget {
+  const _MainPageView({required this.game});
+  final Map<Location, Box> game;
 
-    return Stack(
-      children: widgets,
+  @override
+  Widget build(BuildContext context) {
+    final gameCubit = GetIt.I<GameCubit>();
+    return Scaffold(
+      floatingActionButton: IconButtonWidget(iconData: Icons.gamepad, onPressed: () => gameCubit.createGame()),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      body: BoardWidget(game: game),
     );
   }
 }

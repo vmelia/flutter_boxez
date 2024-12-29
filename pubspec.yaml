@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   get_it: any  
+  bloc: any
   flutter_bloc: any
   equatable: any
 
