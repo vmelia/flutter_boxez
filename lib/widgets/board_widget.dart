@@ -14,7 +14,10 @@ class BoardWidget extends StatelessWidget {
 
     return Scaffold(
       body: GestureDetector(
-        onPanStart: (details) {},
+        onPanStart: (details) {
+          final box = screenSize.getTappedBox(details.globalPosition, game.boxes);
+          if (box != null) {}
+        },
         onPanUpdate: (details) {},
         onPanEnd: (details) {},
         child: Stack(

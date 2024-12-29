@@ -21,9 +21,9 @@ extension ScreenExtensions on Size {
       )
       .toList();
 
-  Box? getTappedBox(Offset globalCoordinates, List<Box> boxes) {
+  Box? getTappedBox(Offset globalPosition, List<Box> boxes) {
     for (final box in boxes) {
-      final isHit = box.getRect(this).contains(globalCoordinates);
+      final isHit = box.getRect(this).contains(globalPosition);
       if (isHit) return box;
     }
 
