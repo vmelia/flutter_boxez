@@ -25,7 +25,7 @@ class GamePage extends StatelessWidget {
 
 class _MainPageView extends StatelessWidget {
   const _MainPageView({required this.game});
-  final Map<Location, Box> game;
+  final Game game;
 
   @override
   Widget build(BuildContext context) {

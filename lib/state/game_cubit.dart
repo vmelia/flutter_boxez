@@ -7,8 +7,8 @@ import '../types.dart';
 
 class GameState extends Equatable {
   const GameState({required this.game});
-  GameState.initial() : game = {};
-  final Map<Location, Box> game;
+  GameState.initial() : game = Game();
+  final Game game;
 
   @override
   List<Object?> get props => [game];

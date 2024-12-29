@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boxez/extensions.dart';
 import 'package:flutter_boxez/types.dart';
 
-import '../widgets.dart';
+import '../extensions.dart';
 
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key, required this.game});
-  final Map<Location, Box> game;
+  final Game game;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final widgets = game.values
-        .map(
-          (box) => Positioned.fromRect(
-            rect: box.location.getRect(screenSize),
-            child: BoxWidget(box: box),
-          ),
-        )
-        .toList();
+    final widgets = game.convertBoxesIntoWidgets(screenSize);
 
-    return Stack(
-      children: widgets,
+    return Scaffold(
+      body: GestureDetector(
+        onPanStart: (details) {},
+        onPanUpdate: (details) {},
+        onPanEnd: (details) {},
+        child: Stack(
+          alignment: Alignment.center,
+          children: widgets,
+        ),
+      ),
     );
   }
 }

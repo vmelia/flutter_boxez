@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../extensions.dart';
 import '../types.dart';
+import '../widgets.dart';
 
-extension GameExtensions on Map<Location, Box> {
+extension GameExtensions on Game {
+  List<Widget> convertBoxesIntoWidgets(Size screenSize)=> boxes
+      .map(
+        (box) => Positioned.fromRect(
+          rect: box.location.getRect(screenSize),
+          child: BoxWidget(box: box),
+        ),
+      )
+      .toList();
+      
   Rect getRect(Location location, Size screenSize) {
     final boxWidth = screenSize.shortestSide / Constants.gridSize;
     final x = screenSize.width / 2 + location.x * boxWidth;
@@ -49,7 +60,7 @@ extension GameExtensions on Map<Location, Box> {
   }
 
   bool _isTheSameColour(Location location, MaterialColor colourToCheck) {
-    final box = this[location];
+    final box = grid[location];
     return box != null && box.colour == colourToCheck;
   }
 }
