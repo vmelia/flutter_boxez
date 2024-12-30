@@ -8,8 +8,8 @@ class ScreenServiceImpl implements ScreenService {
   late Size _screenSize;
 
   @override
-  void initialize(BuildContext context) {
-    _screenSize = MediaQuery.of(context).size;  //ToDo: Move.
+  void initialize(Size screenSize) {
+    _screenSize = screenSize;
   }
 
   @override

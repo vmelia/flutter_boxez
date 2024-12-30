@@ -18,13 +18,13 @@ class BoardWidget extends StatelessWidget {
     return Scaffold(
       body: GestureDetector(
         onPanStart: (details) {
-          dragService.onPanStart(details);
+          dragService.onPanStart();
         },
         onPanUpdate: (details) {
-          dragService.onPanUpdate(details);
+          dragService.onPanUpdate();
         },
         onPanEnd: (details) {
-          dragService.onPanEnd(details);
+          dragService.onPanEnd();
         },
         child: Stack(
           alignment: Alignment.center,

@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenService = GetIt.I<ScreenService>();
-    screenService.initialize(context);
+    screenService.initialize(MediaQuery.of(context).size);
     
     return const MaterialApp(
       home: Scaffold(
