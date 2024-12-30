@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-
+import '../helpers/colours.dart';
 import '../interfaces.dart';
 import '../types.dart';
 
 class GameServiceImpl implements GameService {
   GameServiceImpl(this.randomService);
   final RandomService randomService;
-  
+
   final _game = Game();
 
   @override
@@ -28,21 +27,16 @@ class GameServiceImpl implements GameService {
   Game get game => _game;
 
   @override
-  MaterialColor getValidColour(Location location, MaterialColor proposedColour) {
-    for (var i = 0; i < Constants.colours.length; i++) {
-      final colourToCheck = _getColourFromOffset(proposedColour, i);
+  int getValidColour(Location location, int proposedColour) {
+    for (var i = 0; i < Colours.count; i++) {
+      final colourToCheck = (proposedColour + i) % Colours.count;
       if (_canPlaceColour(location, colourToCheck)) return colourToCheck;
     }
 
-    return Colors.pink; // Error.
+    return -1; // Error.
   }
 
-  MaterialColor _getColourFromOffset(MaterialColor proposedColour, int offset) {
-    final indexToCheck = Constants.colours.indexOf(proposedColour) + offset;
-    return Constants.colours[indexToCheck % Constants.colours.length];
-  }
-
-  bool _canPlaceColour(Location location, MaterialColor colourToCheck) {
+  bool _canPlaceColour(Location location, int colourToCheck) {
     if (_locationColourMatches(location.x - 1, location.y, colourToCheck)) return false;
     if (_locationColourMatches(location.x + 1, location.y, colourToCheck)) return false;
     if (_locationColourMatches(location.x, location.y - 1, colourToCheck)) return false;
@@ -51,7 +45,7 @@ class GameServiceImpl implements GameService {
     return true;
   }
 
-  bool _locationColourMatches(int x, int y, MaterialColor colourToCheck) =>
+  bool _locationColourMatches(int x, int y, int colourToCheck) =>
       _locationExists(Location(x, y)) && _isTheSameColour(Location(x, y), colourToCheck);
 
   bool _locationExists(Location location) {
@@ -63,7 +57,7 @@ class GameServiceImpl implements GameService {
     return true;
   }
 
-  bool _isTheSameColour(Location location, MaterialColor colourToCheck) {
+  bool _isTheSameColour(Location location, int colourToCheck) {
     final box = _findByLocation(location);
     return box != null && box.colour == colourToCheck;
   }

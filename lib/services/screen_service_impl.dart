@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';  //ToDo: Remove.
 
 import '../interfaces.dart';
 import '../types.dart';
@@ -9,7 +9,7 @@ class ScreenServiceImpl implements ScreenService {
 
   @override
   void initialize(BuildContext context) {
-    _screenSize = MediaQuery.of(context).size;
+    _screenSize = MediaQuery.of(context).size;  //ToDo: Move.
   }
 
   @override
