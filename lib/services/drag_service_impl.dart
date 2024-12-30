@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter_boxez/types.dart';
 
 import '../interfaces.dart';
@@ -7,20 +8,19 @@ class DragServiceImpl implements DragService {
   final GameService gameService;
 
   late Box? draggedBox;
+  late Offset? startPosition;
 
   @override
-  void onPanStart() {
-    // draggedBox = null;
-
-    // final box = screenService.getTappedBox(details.globalPosition, gameService.game);
-    // if (box == null) return;
-
-    // draggedBox = box;
+  void onPanStart(Box box, Offset position) {
+    draggedBox = box;
+    startPosition = position;
   }
 
   @override
-  void onPanUpdate() {}
+  void onPanUpdate(Offset position) {
+    
+  }
 
   @override
-  void onPanEnd() {}
+  void onPanEnd(Offset position) {}
 }

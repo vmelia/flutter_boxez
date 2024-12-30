@@ -12,19 +12,23 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dragService = GetIt.I<DragService>();
+    final gameService = GetIt.I<GameService>();
 
     final widgets = WidgetHelper.convertBoxesIntoWidgets(game, context);
 
     return Scaffold(
       body: GestureDetector(
         onPanStart: (details) {
-          dragService.onPanStart();
+          final box = WidgetHelper.getTappedBox(details.globalPosition, gameService.game, context);
+          if (box != null) {
+            dragService.onPanStart(box, details.globalPosition);
+          }
         },
         onPanUpdate: (details) {
-          dragService.onPanUpdate();
+          dragService.onPanUpdate(details.globalPosition);
         },
         onPanEnd: (details) {
-          dragService.onPanEnd();
+          dragService.onPanEnd(details.globalPosition);
         },
         child: Stack(
           alignment: Alignment.center,

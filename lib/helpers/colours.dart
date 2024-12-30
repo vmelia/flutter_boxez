@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 
 class Colours {
   static MaterialColor convertToColour(int colour) => _colours[colour];
-  static int convertFromColour(MaterialColor colour) => colour.value;  //ToDo: Update.
+
+  static int convertFromColour(MaterialColor colour) {
+    for (var i = 0; i < _colours.length; i++) {
+      if (_colours[i] == colour) {
+        return i;
+      }
+    }
+    return -1; //Error.
+  }
 
   static const List<MaterialColor> _colours = <MaterialColor>[
     Colors.red,
