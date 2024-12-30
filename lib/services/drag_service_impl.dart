@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxez/types.dart';
 
-import '../extensions.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
@@ -15,7 +14,7 @@ class DragServiceImpl implements DragService {
   void onPanStart(DragStartDetails details) {
     draggedBox = null;
 
-    final box = screenService.screenSize.getTappedBox(details.globalPosition, gameService.game);
+    final box = screenService.getTappedBox(details.globalPosition, gameService.game);
     if (box == null) return;
 
     draggedBox = box;
