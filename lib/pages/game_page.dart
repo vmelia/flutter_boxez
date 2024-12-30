@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../state.dart';
-import '../types.dart';
 import '../widgets.dart';
 
 class GamePage extends StatelessWidget {
@@ -13,19 +12,18 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameCubit = GetIt.I<GameCubit>();
     return BlocProvider.value(
-      value: gameCubit..createGame(),
+      value: gameCubit,
       child: BlocBuilder<GameCubit, GameState>(
-        builder: (context, state) {
-          return _MainPageView(game: state.game);
-        },
+        builder: (context, state) =>_MainPageView(state: state),
+        
       ),
     );
   }
 }
 
 class _MainPageView extends StatelessWidget {
-  const _MainPageView({required this.game});
-  final Game game;
+  const _MainPageView({required this.state});
+  final GameState state;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class _MainPageView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: IconButtonWidget(iconData: Icons.gamepad, onPressed: () => gameCubit.createGame()),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: BoardWidget(game: game),
+      body: BoardWidget(game: state.game),
     );
   }
 }
