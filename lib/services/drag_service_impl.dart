@@ -5,25 +5,20 @@ import '../extensions.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
-  DragServiceImpl(this.gameService);
+  DragServiceImpl(this.gameService, this.screenService);
   final GameService gameService;
+  final ScreenService screenService;
 
-  late Size _screenSize;
-  late Location? draggingLocation;
-  late Box? draggingBox;
-
-  @override
-  void initialize(Size screenSize) => _screenSize = screenSize;
+  late Box? draggedBox;
 
   @override
   void onPanStart(DragStartDetails details) {
-    draggingLocation = null;
-    draggingBox = null;
+    draggedBox = null;
 
-    final box = _screenSize.getTappedBox(details.globalPosition, gameService.game);
+    final box = screenService.screenSize.getTappedBox(details.globalPosition, gameService.game);
     if (box == null) return;
 
-    draggingBox = box;
+    draggedBox = box;
   }
 
   @override
