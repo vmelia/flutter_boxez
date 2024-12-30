@@ -11,11 +11,24 @@ void main() {
   runApp(const MainApp());
 }
 
+// void main() {
+//   runZoned<Future<void>>(
+//     () async {
+//       configureServices();
+//       configureState();
+//       runApp(MainApp());
+//     },
+//     onError: (dynamic error, StackTrace stackTrace) {
+//       debugPrint("=================== CAUGHT DART ERROR");
+//     },
+//   );
+// }
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
         body: GamePage(),

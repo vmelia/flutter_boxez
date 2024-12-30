@@ -26,10 +26,10 @@ class WidgetHelper {
     return null;
   }
 
-  static Rect _getRect(Location location, Size screenSize) {
+  static Rect _getRect(Offset location, Size screenSize) {
     final boxWidth = screenSize.shortestSide / Constants.gridSize;
-    final x = screenSize.width / 2 + location.x * boxWidth;
-    final y = screenSize.height / 2 + location.y * boxWidth;
+    final x = screenSize.width / 2 + location.dx * boxWidth;
+    final y = screenSize.height / 2 + location.dy * boxWidth;
 
     return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
   }

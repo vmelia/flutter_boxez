@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import '../helpers.dart';
 import '../interfaces.dart';
@@ -8,11 +9,11 @@ class RandomServiceImpl implements RandomService {
   final Random _random = Random();
 
   @override
-  Location get location => Location(_nextLocationValue(), _nextLocationValue());
+  Offset get location => Offset(_nextLocationValue(), _nextLocationValue());
 
   @override
   int get colour => _next(Colours.count);
 
-  int _nextLocationValue() => _next(Constants.gridSize) - Constants.cellOffset;
+  double _nextLocationValue() => (_next(Constants.gridSize.toInt())) - Constants.cellOffset;
   int _next(int max) => _random.nextInt(max);
 }

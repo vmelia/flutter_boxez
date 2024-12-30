@@ -1,8 +1,10 @@
+import 'dart:ui';
+
 import '../types.dart';
 
 abstract class GameService {
   void createGame();
   Game get game;
 
-  int getValidColour(Location location, int proposedColour);
+  int getValidColour(Offset location, int proposedColour);
 }
