@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxez/types.dart';
 import 'package:get_it/get_it.dart';
 
+import '../helpers.dart';
 import '../interfaces.dart';
 
 class BoardWidget extends StatelessWidget {
@@ -11,9 +12,8 @@ class BoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dragService = GetIt.I<DragService>();
-    final screenService = GetIt.I<ScreenService>();
 
-    final widgets = screenService.convertBoxesIntoWidgets(game);
+    final widgets = WidgetHelper.convertBoxesIntoWidgets(game, context);
 
     return Scaffold(
       body: GestureDetector(

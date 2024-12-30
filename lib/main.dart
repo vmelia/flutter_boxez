@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boxez/services.dart';
-import 'package:get_it/get_it.dart';
 
-import 'interfaces.dart';
 import 'pages.dart';
 import 'state.dart';
 
@@ -17,10 +15,7 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final screenService = GetIt.I<ScreenService>();
-    screenService.initialize(MediaQuery.of(context).size);
-    
+  Widget build(BuildContext context) {   
     return const MaterialApp(
       home: Scaffold(
         body: GamePage(),

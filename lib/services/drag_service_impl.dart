@@ -3,9 +3,8 @@ import 'package:flutter_boxez/types.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
-  DragServiceImpl(this.gameService, this.screenService);
+  DragServiceImpl(this.gameService);
   final GameService gameService;
-  final ScreenService screenService;
 
   late Box? draggedBox;
 
