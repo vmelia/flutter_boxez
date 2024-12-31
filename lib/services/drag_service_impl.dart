@@ -24,7 +24,7 @@ class DragServiceImpl implements DragService {
   void onPanUpdate(Offset dragCurrentLocation) {
     final newLocation = _boxStartLocation! + (dragCurrentLocation - _dragStartLocation!) / _boxRect!.width;
     final updatedBox = _draggedBox!.copyWith(location: newLocation);
-    boxUpdated!(updatedBox);
+    boxesUpdated!([updatedBox]);
   }
 
   @override
@@ -33,7 +33,7 @@ class DragServiceImpl implements DragService {
   }
 
   @override
-  BoxUpdated? boxUpdated;
+  BoxesUpdated? boxesUpdated;
 
   _reset() {
     _draggedBox = null;

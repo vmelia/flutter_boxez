@@ -7,5 +7,5 @@ abstract class GameService {
   Game get game;
 
   int getValidColour(Offset location, int proposedColour);
-  void updateBox(Box box);
+  void updateBoxes(List<Box> updates);
 }

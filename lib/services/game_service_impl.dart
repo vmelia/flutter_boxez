@@ -41,7 +41,7 @@ class GameServiceImpl implements GameService {
   }
 
   @override
-  void updateBox(Box box) => _game.updateBox(box);
+  void updateBoxes(List<Box> updates) => _game.updateBoxes(updates);
 
   bool _canPlaceColour(Offset location, int colourToCheck) {
     if (_locationColourMatches(location.dx - 1, location.dy, colourToCheck)) return false;

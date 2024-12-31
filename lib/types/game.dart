@@ -8,12 +8,13 @@ class Game extends Equatable {
   @override
   List<Object?> get props => [boxes];
 
-  void updateBox(Box box) {
-    for (final b in boxes) {
-      if (b.index == box.index) {
-        boxes.remove(b);
-        boxes.add(box);
-      }
-    }
+  void updateBoxes(List<Box> updates) {
+    updates.forEach(_updateBox);
+  }
+
+  void _updateBox(Box update) {
+    final foundBox = boxes.firstWhere((x) => x.index == update.index);
+    boxes.remove(foundBox);
+    boxes.add(update);
   }
 }
