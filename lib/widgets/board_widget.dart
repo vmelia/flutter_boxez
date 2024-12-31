@@ -21,7 +21,8 @@ class BoardWidget extends StatelessWidget {
         onPanStart: (details) {
           final box = WidgetHelper.getTappedBox(details.globalPosition, gameService.game, context);
           if (box != null) {
-            dragService.onPanStart(box, details.globalPosition);
+            final boxRect = WidgetHelper.getRect(box.location, context);
+            dragService.onPanStart(details.globalPosition, box, boxRect);
           }
         },
         onPanUpdate: (details) {

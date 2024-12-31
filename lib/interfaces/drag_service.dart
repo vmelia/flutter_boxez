@@ -1,10 +1,12 @@
 import 'dart:ui';
 import '../types.dart';
 
-abstract class DragService {
-  void onPanStart(Box box, Offset globalPosition);
-  void onPanUpdate(Offset globalPosition);
-  void onPanEnd(Offset globalPosition);
+typedef BoxUpdated = void Function(Box box);
 
-  late VoidCallback? onChanged;
+abstract class DragService {
+  void onPanStart(Offset dragStartLocation, Box box, Rect boxRect);
+  void onPanUpdate(Offset dragCurrentLocation);
+  void onPanEnd(Offset dragEndLocation);
+
+  late BoxUpdated? boxUpdated;
 }

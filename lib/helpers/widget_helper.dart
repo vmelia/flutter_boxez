@@ -5,11 +5,10 @@ import '../widgets.dart';
 
 class WidgetHelper {
   static List<Widget> convertBoxesIntoWidgets(Game game, BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     return game.boxes
         .map(
           (box) => Positioned.fromRect(
-            rect: _getRect(box.location, screenSize),
+            rect: getRect(box.location, context),
             child: BoxWidget(box: box),
           ),
         )
@@ -17,20 +16,21 @@ class WidgetHelper {
   }
 
   static Box? getTappedBox(Offset globalPosition, Game game, BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     for (final box in game.boxes) {
-      final isHit = _getRect(box.location , screenSize).contains(globalPosition);
+      final isHit = getRect(box.location, context).contains(globalPosition);
       if (isHit) return box;
     }
 
     return null;
   }
 
-  static Rect _getRect(Offset location, Size screenSize) {
-    final boxWidth = screenSize.shortestSide / Constants.gridSize;
-    final x = screenSize.width / 2 + location.dx * boxWidth;
-    final y = screenSize.height / 2 + location.dy * boxWidth;
+  static Rect getRect(Offset location, BuildContext context) {
+    final boxWidth = screenSize(context).shortestSide / Constants.gridSize;
+    final x = screenSize(context).width / 2 + location.dx * boxWidth;
+    final y = screenSize(context).height / 2 + location.dy * boxWidth;
 
     return Rect.fromCenter(center: Offset(x, y), width: boxWidth, height: boxWidth);
   }
+
+  static Size screenSize(context) => MediaQuery.of(context).size;
 }

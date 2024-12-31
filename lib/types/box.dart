@@ -1,8 +1,29 @@
 import 'dart:ui';
 
-class Box {
-  Box({required this.location, required this.colour});
+import 'package:equatable/equatable.dart';
 
-  Offset location; // Can be updated.
+class Box extends Equatable {
+  const Box({
+    required this.index,
+    required this.location,
+    required this.colour,
+  });
+  final int index;
+  final Offset location;
   final int colour;
+  
+  @override
+  List<Object?> get props => [index, location, colour];
+
+  Box copyWith({
+    int? index,
+    Offset? location,
+    int? colour,
+
+  }) =>
+      Box(
+        index: index ?? this.index,
+        location: location ?? this.location,
+        colour: colour ?? this.colour,
+      );
 }

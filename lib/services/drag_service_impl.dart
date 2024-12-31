@@ -7,27 +7,38 @@ class DragServiceImpl implements DragService {
   DragServiceImpl(this.gameService);
   final GameService gameService;
 
-  late Box _draggedBox;
-  late Offset _tappedLocation;
-  late Offset _startLocation;
+  late Box? _draggedBox;
+  late Rect? _boxRect;
+  late Offset? _dragStartLocation;
+  late Offset? _boxStartLocation;
 
   @override
-  void onPanStart(Box box, Offset globalPosition) {
+  void onPanStart(Offset dragStartLocation, Box box, Rect boxRect) {
+    _dragStartLocation = dragStartLocation;
     _draggedBox = box;
-    _tappedLocation = globalPosition;
-    _startLocation = box.location;
+    _boxRect = boxRect;
+    _boxStartLocation = box.location;
   }
 
   @override
-  void onPanUpdate(Offset globalPosition) {
-    final newLocation = _startLocation + globalPosition - _tappedLocation;
-    _draggedBox.location = newLocation;
-    onChanged!();
+  void onPanUpdate(Offset dragCurrentLocation) {
+    final newLocation = _boxStartLocation! + (dragCurrentLocation - _dragStartLocation!) / _boxRect!.width;
+    final updatedBox = _draggedBox!.copyWith(location: newLocation);
+    boxUpdated!(updatedBox);
   }
 
   @override
-  void onPanEnd(Offset globalPosition) {}
+  void onPanEnd(Offset dragEndLocation) {
+    _reset();
+  }
 
   @override
-  VoidCallback? onChanged;
+  BoxUpdated? boxUpdated;
+
+  _reset() {
+    _draggedBox = null;
+    _boxRect = null;
+    _dragStartLocation = null;
+    _boxStartLocation = null;
+  }
 }

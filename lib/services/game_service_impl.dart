@@ -14,13 +14,15 @@ class GameServiceImpl implements GameService {
   void createGame() {
     _game.boxes.clear();
 
+    int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
       for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
         final location = Offset(x, y);
         final proposedColour = randomService.colour;
         final colour = getValidColour(location, proposedColour);
 
-        game.boxes.add(Box(location: location, colour: colour));
+        game.boxes.add(Box(index: index, location: location, colour: colour));
+        index++;
       }
     }
   }
@@ -37,6 +39,9 @@ class GameServiceImpl implements GameService {
 
     return -1; // Error.
   }
+
+  @override
+  void updateBox(Box box) => _game.updateBox(box);
 
   bool _canPlaceColour(Offset location, int colourToCheck) {
     if (_locationColourMatches(location.dx - 1, location.dy, colourToCheck)) return false;
