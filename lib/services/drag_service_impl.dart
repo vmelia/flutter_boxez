@@ -30,7 +30,8 @@ class DragServiceImpl implements DragService {
   @override
   void onPanEnd(Offset dragLocation) {
     final newLocation = _calculateNewLocation(dragLocation);
-    final updatedBox = _draggedBox!.copyWith(location: newLocation);
+    final validLocation = _snapToCell(newLocation);
+    final updatedBox = _draggedBox!.copyWith(location: validLocation);
     boxesUpdated!([updatedBox]);
 
     _reset();
@@ -54,6 +55,8 @@ class DragServiceImpl implements DragService {
     // vertical dragging.
     return Offset(_boxStartLocation!.dx, requestedLocation.dy);
   }
+
+  _snapToCell(Offset location) => Offset(location.dx.round().toDouble(), location.dy.round().toDouble());
 
   _reset() {
     _draggedBox = null;
