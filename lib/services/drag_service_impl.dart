@@ -23,17 +23,36 @@ class DragServiceImpl implements DragService {
   @override
   void onPanUpdate(Offset dragCurrentLocation) {
     final newLocation = _boxStartLocation! + (dragCurrentLocation - _dragStartLocation!) / _boxRect!.width;
-    final updatedBox = _draggedBox!.copyWith(location: newLocation);
+    final newLocationSnapped = _snapToColumnOrRow(newLocation);
+
+    final updatedBox = _draggedBox!.copyWith(location: newLocationSnapped);
     boxesUpdated!([updatedBox]);
   }
 
   @override
   void onPanEnd(Offset dragEndLocation) {
+    // final newLocation = _boxStartLocation! + (dragEndLocation - _dragStartLocation!) / _boxRect!.width;
+    // final newLocationSnapped = _snapToColumnOrRow(newLocation);
+
+    // final updatedBox = _draggedBox!.copyWith(location: newLocationSnapped);
+    // boxesUpdated!([updatedBox]);
+
     _reset();
   }
 
   @override
   BoxesUpdated? boxesUpdated;
+
+  Offset _snapToColumnOrRow(Offset requestedLocation) {
+    final deltaX = _boxStartLocation!.dx - requestedLocation.dx;
+    final deltaY = _boxStartLocation!.dy - requestedLocation.dy;
+    if (deltaX.abs() > deltaY.abs()) {
+      // Horizonal dragging.
+      return Offset(requestedLocation.dx, _boxStartLocation!.dy);
+    }
+    // vertical dragging.
+    return Offset(_boxStartLocation!.dx, requestedLocation.dy);
+  }
 
   _reset() {
     _draggedBox = null;
