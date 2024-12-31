@@ -13,35 +13,36 @@ class DragServiceImpl implements DragService {
   late Offset? _boxStartLocation;
 
   @override
-  void onPanStart(Offset dragStartLocation, Box box, Rect boxRect) {
-    _dragStartLocation = dragStartLocation;
+  void onPanStart(Offset dragLocation, Box box, Rect boxRect) {
+    _dragStartLocation = dragLocation;
     _draggedBox = box;
     _boxRect = boxRect;
     _boxStartLocation = box.location;
   }
 
   @override
-  void onPanUpdate(Offset dragCurrentLocation) {
-    final newLocation = _boxStartLocation! + (dragCurrentLocation - _dragStartLocation!) / _boxRect!.width;
-    final newLocationSnapped = _snapToColumnOrRow(newLocation);
-
-    final updatedBox = _draggedBox!.copyWith(location: newLocationSnapped);
+  void onPanUpdate(Offset dragLocation) {
+    final newLocation = _calculateNewLocation(dragLocation);
+    final updatedBox = _draggedBox!.copyWith(location: newLocation);
     boxesUpdated!([updatedBox]);
   }
 
   @override
-  void onPanEnd(Offset dragEndLocation) {
-    // final newLocation = _boxStartLocation! + (dragEndLocation - _dragStartLocation!) / _boxRect!.width;
-    // final newLocationSnapped = _snapToColumnOrRow(newLocation);
-
-    // final updatedBox = _draggedBox!.copyWith(location: newLocationSnapped);
-    // boxesUpdated!([updatedBox]);
+  void onPanEnd(Offset dragLocation) {
+    final newLocation = _calculateNewLocation(dragLocation);
+    final updatedBox = _draggedBox!.copyWith(location: newLocation);
+    boxesUpdated!([updatedBox]);
 
     _reset();
   }
 
   @override
   BoxesUpdated? boxesUpdated;
+
+  Offset _calculateNewLocation(Offset dragLocation) {
+    final newLocation = _boxStartLocation! + (dragLocation - _dragStartLocation!) / _boxRect!.width;
+    return _snapToColumnOrRow(newLocation);
+  }
 
   Offset _snapToColumnOrRow(Offset requestedLocation) {
     final deltaX = _boxStartLocation!.dx - requestedLocation.dx;
