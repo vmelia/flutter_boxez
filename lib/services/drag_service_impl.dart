@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter_boxez/types.dart';
 
-import '../helpers.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
@@ -18,8 +17,8 @@ class DragServiceImpl implements DragService {
     _globalStartLocation = globalLocation;
     _boxWidth = boxWidth;
 
-    _draggedRow = gameService.game.getSelectedRow(box);
-    _draggedColumn = gameService.game.getSelectedColumn(box);
+    _draggedRow = gameService.getSelectedRow(box);
+    _draggedColumn = gameService.getSelectedColumn(box);
   }
 
   @override
@@ -36,23 +35,21 @@ class DragServiceImpl implements DragService {
   @override
   BoxesUpdated? boxesUpdated;
 
-  void _updateSelectedBoxes(Offset globalLocation, bool snapToCell) {
+  void _updateSelectedBoxes(Offset globalLocation, bool done) {
     final globalDelta = globalLocation - _globalStartLocation!;
     final draggingingHorizontally = globalDelta.dx.abs() > globalDelta.dy.abs();
 
     final localDelta = globalDelta / _boxWidth;
     final localDeltaSnapped = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
-    final localDeltaSnappedToCell = snapToCell ? _snapToCell(localDeltaSnapped) : localDeltaSnapped;
+    final localDeltaSnappedToCell = done ? _snapToCell(localDeltaSnapped) : localDeltaSnapped;
 
-    List<Box> updatedBoxes = <Box>[];
     if (draggingingHorizontally) {
       _updateBoxes(_draggedColumn, Offset(0, 0));
       _updateBoxes(_draggedRow, localDeltaSnappedToCell);
     } else {
       _updateBoxes(_draggedRow, Offset(0, 0));
-      _updateBoxes(_draggedColumn, localDeltaSnappedToCell);
+      _updateBoxes(_draggedColumn, localDeltaSnappedToCell); 
     }
-    boxesUpdated!(updatedBoxes);
   }
 
   void _updateBoxes(Map<Offset, Box> boxes, Offset localDelta) {
@@ -61,7 +58,7 @@ class DragServiceImpl implements DragService {
       final updatedBox = entry.value.copyWith(location: entry.key + localDelta);
       updatedBoxes.add(updatedBox);
     }
-    boxesUpdated!(updatedBoxes);
+    boxesUpdated!(updatedBoxes, localDelta == Offset(0, 0));  //ToDo: Not very clear.
   }
 
   _snapToCell(Offset localLocation) => Offset(localLocation.dx.round().toDouble(), localLocation.dy.round().toDouble());

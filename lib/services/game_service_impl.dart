@@ -43,6 +43,58 @@ class GameServiceImpl implements GameService {
   @override
   void updateBoxes(List<Box> updates) => _game.updateBoxes(updates);
 
+  @override
+  Map<Offset, Box> getSelectedRow(Box box) {
+    final map = <Offset, Box>{};
+    for (final b in _game.boxes) {
+      if (b.location.dy == box.location.dy) {
+        map[b.location] = b;
+      }
+    }
+
+    return map;
+  }
+
+  @override
+  Map<Offset, Box> getSelectedColumn(Box box) {
+    final map = <Offset, Box>{};
+    for (final b in _game.boxes) {
+      if (b.location.dx == box.location.dx) {
+        map[b.location] = b;
+      }
+    }
+
+    return map;
+  }
+  
+  @override
+  Map<double, List<Box>> getAllColumns() {
+    final map = <double, List<Box>>{};
+    for (final b in _game.boxes) {
+      if (!map.containsKey(b.location.dx)) {
+        map[b.location.dx] = <Box>[];
+      }
+      map[b.location.dx]!.add(b);
+      map[b.location.dx]!.sort((a, b) => a.location.dx.compareTo(b.location.dx));
+    }
+
+    return map;
+  }
+
+  @override
+  Map<double, List<Box>> getAllRows() {
+    final map = <double, List<Box>>{};
+    for (final b in _game.boxes) {
+      if (!map.containsKey(b.location.dy)) {
+        map[b.location.dy] = <Box>[];
+      }
+      map[b.location.dy]!.add(b);
+      map[b.location.dy]!.sort((a, b) => a.location.dy.compareTo(b.location.dy));
+    }
+
+    return map;
+  }
+
   bool _canPlaceColour(Offset location, int colourToCheck) {
     if (_locationColourMatches(location.dx - 1, location.dy, colourToCheck)) return false;
     if (_locationColourMatches(location.dx + 1, location.dy, colourToCheck)) return false;
