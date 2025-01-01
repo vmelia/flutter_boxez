@@ -1,3 +1,3 @@
 # flutter_boxez
 
-https://www.youtube.com/watch?v=I2g-zxoCeY8
+https://www.youtube.com/playlist?list=PLHA2SXYTjj2tDkgToOOKxI1NhByFdXU9c

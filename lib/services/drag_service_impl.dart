@@ -1,67 +1,89 @@
 import 'dart:ui';
 import 'package:flutter_boxez/types.dart';
 
+import '../helpers.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
   DragServiceImpl(this.gameService);
   final GameService gameService;
 
-  late Box? _draggedBox;
   late Rect? _boxRect;
-  late Offset? _dragStartLocation;
-  late Offset? _boxStartLocation;
+  late Offset? _globalStartLocation;
+
+  late Map<Offset, Box> _draggedRow;
+  late Map<Offset, Box> _draggedColumn;
 
   @override
-  void onPanStart(Offset dragLocation, Box box, Rect boxRect) {
-    _dragStartLocation = dragLocation;
-    _draggedBox = box;
+  void onPanStart(Offset globalLocation, Box box, Rect boxRect) {
+    _globalStartLocation = globalLocation;
     _boxRect = boxRect;
-    _boxStartLocation = box.location;
+
+    _draggedRow = gameService.game.getSelectedRow(box);
+    _draggedColumn = gameService.game.getSelectedColumn(box);
   }
 
   @override
-  void onPanUpdate(Offset dragLocation) {
-    final newLocation = _calculateNewLocation(dragLocation);
-    final updatedBox = _draggedBox!.copyWith(location: newLocation);
-    boxesUpdated!([updatedBox]);
+  void onPanUpdate(Offset globalLocation) {
+    _updateSelectedGroup(globalLocation, false);
   }
 
   @override
-  void onPanEnd(Offset dragLocation) {
-    final newLocation = _calculateNewLocation(dragLocation);
-    final validLocation = _snapToCell(newLocation);
-    final updatedBox = _draggedBox!.copyWith(location: validLocation);
-    boxesUpdated!([updatedBox]);
-
+  void onPanEnd(Offset globalLocation) {
+    _updateSelectedGroup(globalLocation, true);
     _reset();
   }
 
   @override
   BoxesUpdated? boxesUpdated;
 
-  Offset _calculateNewLocation(Offset dragLocation) {
-    final newLocation = _boxStartLocation! + (dragLocation - _dragStartLocation!) / _boxRect!.width;
-    return _snapToColumnOrRow(newLocation);
-  }
+  void _updateSelectedGroup(Offset globalLocation, bool snapToCell) {
+    final globalDelta = globalLocation - _globalStartLocation!;
+    final localDelta = globalDelta / _boxRect!.width;
+    final draggingingHorizontally = globalDelta.dx.abs() > globalDelta.dy.abs();
+    final localDeltaSnapped = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
+    final localDeltaSnappedToCell = snapToCell ? _snapToCell(localDeltaSnapped) : localDeltaSnapped;
 
-  Offset _snapToColumnOrRow(Offset requestedLocation) {
-    final deltaX = _boxStartLocation!.dx - requestedLocation.dx;
-    final deltaY = _boxStartLocation!.dy - requestedLocation.dy;
-    if (deltaX.abs() > deltaY.abs()) {
-      // Horizonal dragging.
-      return Offset(requestedLocation.dx, _boxStartLocation!.dy);
+    List<Box> updatedBoxes = <Box>[];
+    if (draggingingHorizontally) {
+      _updateBoxesToOriginalPositions(_draggedColumn);
+      _updateBoxesToNewPositions(_draggedRow, localDeltaSnappedToCell);
+    } else {
+      _updateBoxesToOriginalPositions(_draggedRow);
+      _updateBoxesToNewPositions(_draggedColumn, localDeltaSnappedToCell);
     }
-    // vertical dragging.
-    return Offset(_boxStartLocation!.dx, requestedLocation.dy);
+    boxesUpdated!(updatedBoxes);
   }
 
-  _snapToCell(Offset location) => Offset(location.dx.round().toDouble(), location.dy.round().toDouble());
+  void _updateBoxesToOriginalPositions(Map<Offset, Box> boxes) {
+    List<Box> updatedBoxes = <Box>[];
+    for (final entry in boxes.entries) {
+      final box = entry.value;
+      if (box.location == entry.key) continue;
+
+      final updatedBox = box.copyWith(location: entry.key);
+      updatedBoxes.add(updatedBox);
+    }
+    boxesUpdated!(updatedBoxes);
+  }
+
+  void _updateBoxesToNewPositions(Map<Offset, Box> boxes, Offset localDelta) {
+    List<Box> updatedBoxes = <Box>[];
+    for (final entry in boxes.entries) {
+      final box = entry.value;
+      final newLocalLocation = entry.key + localDelta;
+      final updatedBox = box.copyWith(location: newLocalLocation);
+      updatedBoxes.add(updatedBox);
+    }
+    boxesUpdated!(updatedBoxes);
+  }
+
+  _snapToCell(Offset localLocation) => Offset(localLocation.dx.round().toDouble(), localLocation.dy.round().toDouble());
 
   _reset() {
-    _draggedBox = null;
     _boxRect = null;
-    _dragStartLocation = null;
-    _boxStartLocation = null;
+    _globalStartLocation = null;
+    _draggedRow = {};
+    _draggedColumn = {};
   }
 }
