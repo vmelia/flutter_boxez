@@ -13,6 +13,14 @@ class BoxWidget extends StatelessWidget {
       padding: EdgeInsets.all(Constants.boxPadding),
       child: Container(
         decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colours.convertToColour(box.colour).withAlpha(Constants.boxGradientAlpha),
+              Colours.convertToColour(box.colour),
+            ],
+          ),
           color: Colours.convertToColour(box.colour),
           borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
         ),

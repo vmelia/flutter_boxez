@@ -8,4 +8,5 @@ class Constants {
   // BoxWidgets.
   static const double boxPadding = 4.0;
   static const double boxRadius = 20.0;
+  static const int boxGradientAlpha = 100;
 }

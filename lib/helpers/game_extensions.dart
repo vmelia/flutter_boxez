@@ -24,4 +24,25 @@ extension GameExtensions on Game {
 
     return map;
   }
+
+  Offset getMinAndMaxCoordinates() {
+    double minimum = double.infinity;
+    double maximum = -double.infinity;
+    for(final box in boxes) {
+      if (box.location.dx < minimum) {
+        minimum = box.location.dx;
+      }
+      if (box.location.dy < minimum) {
+        minimum = box.location.dy;
+      }
+      if (box.location.dx > maximum) {
+        maximum = box.location.dx;
+      }
+      if (box.location.dy > maximum) {
+        maximum = box.location.dy;
+      }
+    }
+
+    return Offset(minimum, maximum);
+  }
 }
