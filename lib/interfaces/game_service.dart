@@ -3,10 +3,9 @@ import 'dart:ui';
 import '../types.dart';
 
 abstract class GameService {
-  void createGame();
+  set game(Game game);
   Game get game;
 
-  int getValidColour(Offset location, int proposedColour);
   void updateBoxes(List<Box> updates);
 
   Map<Offset, Box> getSelectedRow(Box box);

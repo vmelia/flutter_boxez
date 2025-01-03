@@ -1,69 +1,45 @@
 import 'dart:ui';
 
+import 'package:flutter_boxez/interfaces/game_creator_service.dart';
+import 'package:flutter_boxez/types/game.dart';
+
+import '../helpers.dart';
 import '../interfaces.dart';
 import '../types.dart';
 
-class GameServiceImpl implements GameService {
-  GameServiceImpl(this.randomService);
+class GameCreatorServiceImpl implements GameCreatorService {
+  GameCreatorServiceImpl(this.randomService);
   final RandomService randomService;
 
-  late Game _game;
+  final _game = Game();
 
   @override
-  set game(Game newGame) => _game = newGame;
+  void createGame() {
+    _game.boxes.clear();
+
+    int index = 0;
+    for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
+      for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
+        final location = Offset(x, y);
+        final proposedColour = randomService.colour;
+        final colour = _getValidColour(location, proposedColour);
+
+        game.boxes.add(Box(index: index, location: location, colour: colour));
+        index++;
+      }
+    }
+  }
 
   @override
   Game get game => _game;
 
-  @override
-  void updateBoxes(List<Box> updates) => _game.updateBoxes(updates);
-
-  @override
-  Map<Offset, Box> getSelectedRow(Box box) {
-    final map = <Offset, Box>{};
-    for (final b in _game.boxes) {
-      if (b.location.dy == box.location.dy) {
-        map[b.location] = b;
-      }
+  int _getValidColour(Offset location, int proposedColour) {
+    for (var i = 0; i < Colours.count; i++) {
+      final colourToCheck = (proposedColour + i) % Colours.count;
+      if (_canPlaceColour(location, colourToCheck)) return colourToCheck;
     }
 
-    return map;
-  }
-
-  @override
-  Map<Offset, Box> getSelectedColumn(Box box) {
-    final map = <Offset, Box>{};
-    for (final b in _game.boxes) {
-      if (b.location.dx == box.location.dx) {
-        map[b.location] = b;
-      }
-    }
-
-    return map;
-  }
-
-  @override
-  Map<double, List<Box>> getAllColumns() {
-    final map = <double, List<Box>>{};
-    for (final b in _game.boxes) {
-      final col = map.putIfAbsent(b.location.dx, () => <Box>[]);
-      col.add(b);
-      col.sort((a, b) => a.location.dx.compareTo(b.location.dx));
-    }
-
-    return map;
-  }
-
-  @override
-  Map<double, List<Box>> getAllRows() {
-    final map = <double, List<Box>>{};
-    for (final b in _game.boxes) {
-      final row = map.putIfAbsent(b.location.dy, () => <Box>[]);
-      row.add(b);
-      row.sort((a, b) => a.location.dy.compareTo(b.location.dy));
-    }
-
-    return map;
+    return -1; // Error.
   }
 
   bool _canPlaceColour(Offset location, int colourToCheck) {
