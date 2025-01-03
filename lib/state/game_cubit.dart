@@ -26,8 +26,7 @@ class GameCubit extends Cubit<GameState> {
   void createGame() {
     emit(GameState.initial());
     gameCreatorService.createGame();
-    gameDataService.game = gameCreatorService.game;
-    emit(GameState(game: gameDataService.game));
+    emit(GameState(game: gameCreatorService.game));
   }
 
   void boxesUpdated(List<Box> updates, bool done) {

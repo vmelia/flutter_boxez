@@ -8,7 +8,10 @@ class GameCreatorServiceImpl implements GameCreatorService {
   GameCreatorServiceImpl(this.randomService);
   final RandomService randomService;
 
-  final _game = Game();
+  final Game _game = Game();
+
+  @override
+  Game get game => _game;
 
   @override
   void createGame() {
@@ -26,9 +29,6 @@ class GameCreatorServiceImpl implements GameCreatorService {
       }
     }
   }
-
-  @override
-  Game get game => _game;
 
   int _getValidColour(Offset location, int proposedColour) {
     for (var i = 0; i < Colours.count; i++) {
