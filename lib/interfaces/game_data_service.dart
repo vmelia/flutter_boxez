@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import '../types.dart';
 
-abstract class GameService {
+abstract class GameDataService {
   set game(Game game);
   Game get game;
 

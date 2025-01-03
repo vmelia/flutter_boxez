@@ -15,24 +15,24 @@ class GameState extends Equatable {
 }
 
 class GameCubit extends Cubit<GameState> {
-  GameCubit(this.gameCreatorService, this.gameService, this.dragService) : super(GameState.initial()) {
+  GameCubit(this.gameCreatorService, this.gameDataService, this.dragService) : super(GameState.initial()) {
     dragService.boxesUpdated = boxesUpdated;
   }
 
   final GameCreatorService gameCreatorService;
-  final GameService gameService;
+  final GameDataService gameDataService;
   final DragService dragService;
 
   void createGame() {
     emit(GameState.initial());
     gameCreatorService.createGame();
-    gameService.game = gameCreatorService.game;
-    emit(GameState(game: gameService.game));
+    gameDataService.game = gameCreatorService.game;
+    emit(GameState(game: gameDataService.game));
   }
 
   void boxesUpdated(List<Box> updates, bool done) {
     emit(GameState.initial());
-    gameService.updateBoxes(updates);
-    emit(GameState(game: gameService.game));
+    gameDataService.updateBoxes(updates);
+    emit(GameState(game: gameDataService.game));
   }
 }

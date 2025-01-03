@@ -4,8 +4,8 @@ import 'package:flutter_boxez/types.dart';
 import '../interfaces.dart';
 
 class DragServiceImpl implements DragService {
-  DragServiceImpl(this.gameService);
-  final GameService gameService;
+  DragServiceImpl(this.gameDataService);
+  final GameDataService gameDataService;
 
   late double _boxWidth;
   late Offset? _globalStartLocation;
@@ -17,8 +17,8 @@ class DragServiceImpl implements DragService {
     _globalStartLocation = globalLocation;
     _boxWidth = boxWidth;
 
-    _draggedRow = gameService.getSelectedRow(box);
-    _draggedColumn = gameService.getSelectedColumn(box);
+    _draggedRow = gameDataService.getSelectedRow(box);
+    _draggedColumn = gameDataService.getSelectedColumn(box);
   }
 
   @override

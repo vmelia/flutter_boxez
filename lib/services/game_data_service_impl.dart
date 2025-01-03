@@ -3,8 +3,8 @@ import 'dart:ui';
 import '../interfaces.dart';
 import '../types.dart';
 
-class GameServiceImpl implements GameService {
-  GameServiceImpl(this.randomService);
+class GameDataServiceImpl implements GameDataService {
+  GameDataServiceImpl(this.randomService);
   final RandomService randomService;
 
   late Game _game;
