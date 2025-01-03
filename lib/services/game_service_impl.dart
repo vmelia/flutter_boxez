@@ -65,38 +65,4 @@ class GameServiceImpl implements GameService {
 
     return map;
   }
-
-  bool _canPlaceColour(Offset location, int colourToCheck) {
-    if (_locationColourMatches(location.dx - 1, location.dy, colourToCheck)) return false;
-    if (_locationColourMatches(location.dx + 1, location.dy, colourToCheck)) return false;
-    if (_locationColourMatches(location.dx, location.dy - 1, colourToCheck)) return false;
-    if (_locationColourMatches(location.dx, location.dy + 1, colourToCheck)) return false;
-
-    return true;
-  }
-
-  bool _locationColourMatches(double x, double y, int colourToCheck) =>
-      _locationExists(Offset(x, y)) && _isTheSameColour(Offset(x, y), colourToCheck);
-
-  bool _locationExists(Offset location) {
-    if (location.dx < Constants.gridStart) return false;
-    if (location.dy < Constants.gridStart) return false;
-    if (location.dx > Constants.gridEnd) return false;
-    if (location.dy > Constants.gridEnd) return false;
-
-    return true;
-  }
-
-  bool _isTheSameColour(Offset location, int colourToCheck) {
-    final box = _findByLocation(location);
-    return box != null && box.colour == colourToCheck;
-  }
-
-  Box? _findByLocation(Offset location) {
-    for (final box in _game.boxes) {
-      if (box.location == location) return box;
-    }
-
-    return null;
-  }
 }
