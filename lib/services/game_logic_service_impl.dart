@@ -23,9 +23,9 @@ class GameLogicServiceImpl extends GameLogicService {
     return false;
   }
 
-  List<Box> _removeContiguousBoxesInColumnsOrRows(Map<double, List<Box>> allColumnsOrRows) {
+  List<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
     final boxesToRemove = <Box>[];
-    for (final columnOrRow in allColumnsOrRows.values) {
+    for (final columnOrRow in allColumnsOrRows) {
       Box? lastBox;
       List<Box> run = <Box>[];
       for (final b in columnOrRow) {

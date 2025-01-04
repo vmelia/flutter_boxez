@@ -38,7 +38,7 @@ class GameDataServiceImpl implements GameDataService {
   }
 
   @override
-  Map<double, List<Box>> getAllColumns() {
+  Iterable<List<Box>> getAllColumns() {
     final map = <double, List<Box>>{};
     for (final b in gameProviderService.game.boxes) {
       final col = map.putIfAbsent(b.location.dx, () => <Box>[]);
@@ -46,11 +46,11 @@ class GameDataServiceImpl implements GameDataService {
       col.sort((a, b) => a.location.dx.compareTo(b.location.dx));
     }
 
-    return map;
+    return map.values;
   }
 
   @override
-  Map<double, List<Box>> getAllRows() {
+  Iterable<List<Box>> getAllRows() {
     final map = <double, List<Box>>{};
     for (final b in gameProviderService.game.boxes) {
       final row = map.putIfAbsent(b.location.dy, () => <Box>[]);
@@ -58,7 +58,7 @@ class GameDataServiceImpl implements GameDataService {
       row.sort((a, b) => a.location.dy.compareTo(b.location.dy));
     }
 
-    return map;
+    return map.values;
   }
 
   void _updateBox(Box update) {
