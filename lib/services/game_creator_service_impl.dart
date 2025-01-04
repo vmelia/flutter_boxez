@@ -11,6 +11,10 @@ class GameCreatorServiceImpl implements GameCreatorService {
 
   @override
   void createGame() {
+    _createGame();
+  }
+
+  void _createGame() {
     gameProviderService.game.clear();
     int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
@@ -24,6 +28,19 @@ class GameCreatorServiceImpl implements GameCreatorService {
       }
     }
   }
+
+  // void _createTestGame() {
+  //   gameProviderService.game.clear();
+  //   gameProviderService.game.add(Box(index: 0, location: Offset(-1, -1), colour: 0));
+  //   gameProviderService.game.add(Box(index: 1, location: Offset(-1, 0), colour: 2));
+  //   gameProviderService.game.add(Box(index: 2, location: Offset(-1, 1), colour: 0));
+  //   gameProviderService.game.add(Box(index: 3, location: Offset(0, -1), colour: 2));
+  //   gameProviderService.game.add(Box(index: 4, location: Offset(0, 0), colour: 4));
+  //   gameProviderService.game.add(Box(index: 5, location: Offset(0, 1), colour: 2));
+  //   gameProviderService.game.add(Box(index: 6, location: Offset(1, -1), colour: 0));
+  //   gameProviderService.game.add(Box(index: 7, location: Offset(1, 0), colour: 2));
+  //   gameProviderService.game.add(Box(index: 8, location: Offset(1, 1), colour: 0));
+  // }
 
   int _getValidColour(Offset location, int proposedColour) {
     for (var i = 0; i < Colours.count; i++) {

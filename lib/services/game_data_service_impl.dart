@@ -14,22 +14,22 @@ class GameDataServiceImpl implements GameDataService {
   void removeBoxes(List<Box> updates) => gameProviderService.game.removeList(updates);
 
   @override
-  Map<Offset, Box> getSelectedRow(Offset location) {
+  Map<Offset, Box> getSelectedColumn(Offset location) {
     final map = <Offset, Box>{};
     for (final b in gameProviderService.game.boxes) {
-      if (b.location.dy == location.dy) {
+      if (b.location.dx == location.dx) {
         map[b.location] = b;
       }
     }
 
     return map;
   }
-
+  
   @override
-  Map<Offset, Box> getSelectedColumn(Offset location) {
+  Map<Offset, Box> getSelectedRow(Offset location) {
     final map = <Offset, Box>{};
     for (final b in gameProviderService.game.boxes) {
-      if (b.location.dx == location.dx) {
+      if (b.location.dy == location.dy) {
         map[b.location] = b;
       }
     }

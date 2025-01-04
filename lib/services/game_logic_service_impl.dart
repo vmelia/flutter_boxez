@@ -7,20 +7,31 @@ class GameLogicServiceImpl extends GameLogicService {
   final GameDataService gameDataService;
 
   @override
-  bool removeContiguousBoxes() =>
-      _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows().values.toList()) ||
-      _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns().values.toList());
-
-  bool _removeContiguousBoxesInColumnsOrRows(List<List<Box>> columnsOrRows) {
+  bool removeContiguousBoxes() {
     final boxesToRemove = <Box>[];
+    final rowBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows());
+    boxesToRemove.addAll(rowBoxes);
 
-    for (final columnsOrRow in columnsOrRows) {
+    final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
+    boxesToRemove.addAll(columnBoxes);
+
+    if (boxesToRemove.isNotEmpty) {
+      gameDataService.removeBoxes(boxesToRemove);
+      return true;
+    }
+
+    return false;
+  }
+
+  List<Box> _removeContiguousBoxesInColumnsOrRows(Map<double, List<Box>> allColumnsOrRows) {
+    final boxesToRemove = <Box>[];
+    for (final columnOrRow in allColumnsOrRows.values) {
       Box? lastBox;
       List<Box> run = <Box>[];
-      for (final b in columnsOrRow) {
+      for (final b in columnOrRow) {
         if (lastBox == null || lastBox.colour != b.colour) {
           // Start new run.
-          if (run.length >= 3) {
+          if (run.length >= Constants.matchesRequired) {
             boxesToRemove.addAll(run);
           }
 
@@ -39,10 +50,6 @@ class GameLogicServiceImpl extends GameLogicService {
       }
     }
 
-    if (boxesToRemove.isNotEmpty) {
-      gameDataService.removeBoxes(boxesToRemove);
-    }
-
-    return boxesToRemove.isNotEmpty;
+    return boxesToRemove;
   }
 }

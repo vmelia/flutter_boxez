@@ -15,7 +15,6 @@ class GamePage extends StatelessWidget {
       value: gameCubit,
       child: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) =>_MainPageView(state: state),
-        
       ),
     );
   }
