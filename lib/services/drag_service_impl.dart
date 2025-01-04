@@ -13,12 +13,12 @@ class DragServiceImpl implements DragService {
   late Map<Offset, Box> _draggedColumn;
 
   @override
-  void onPanStart(Offset globalLocation, Box box, double boxWidth) {
+  void onPanStart(Offset globalLocation, Offset location, double boxWidth) {
     _globalStartLocation = globalLocation;
     _boxWidth = boxWidth;
 
-    _draggedRow = gameDataService.getSelectedRow(box);
-    _draggedColumn = gameDataService.getSelectedColumn(box);
+    _draggedRow = gameDataService.getSelectedRow(location);
+    _draggedColumn = gameDataService.getSelectedColumn(location);
   }
 
   @override
@@ -39,36 +39,42 @@ class DragServiceImpl implements DragService {
   BoxesUpdated? boxesMoving;
 
   void _stillMovingBoxes(Offset globalLocation) {
-    final globalDelta = globalLocation - _globalStartLocation!;
-    final draggingingHorizontally = globalDelta.dx.abs() > globalDelta.dy.abs();
-
-    final localDelta = globalDelta / _boxWidth;
-    final localDeltaSnapped = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
+    final draggingingHorizontally = _draggingHorizontally(globalLocation);
+    final localDelta = _calculatelocalDelta(globalLocation, false);
 
     if (draggingingHorizontally) {
       _updateBoxes(_draggedColumn, Offset(0, 0), false);
-      _updateBoxes(_draggedRow, localDeltaSnapped, false);
+      _updateBoxes(_draggedRow, localDelta, false);
     } else {
       _updateBoxes(_draggedRow, Offset(0, 0), false);
-      _updateBoxes(_draggedColumn, localDeltaSnapped, false);
+      _updateBoxes(_draggedColumn, localDelta, false);
     }
   }
 
   void _finishedMovingBoxes(Offset globalLocation) {
+    final draggingingHorizontally = _draggingHorizontally(globalLocation);
+    final localDelta = _calculatelocalDelta(globalLocation, true);
+
+    if (draggingingHorizontally) {
+      _updateBoxes(_draggedRow, localDelta, true);
+    } else {
+      _updateBoxes(_draggedColumn, localDelta, true);
+    }
+  }
+
+  bool _draggingHorizontally(Offset globalLocation) {
+    final globalDelta = globalLocation - _globalStartLocation!;
+    return globalDelta.dx.abs() > globalDelta.dy.abs();
+  }
+
+  Offset _calculatelocalDelta(Offset globalLocation, bool snapToCell) {
     final globalDelta = globalLocation - _globalStartLocation!;
     final draggingingHorizontally = globalDelta.dx.abs() > globalDelta.dy.abs();
 
     final localDelta = globalDelta / _boxWidth;
-    final localDeltaSnapped = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
-    final localDeltaSnappedToCell = _snapToCell(localDeltaSnapped);
+    final localDeltaSnappedToColumnAndRow = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
 
-    if (draggingingHorizontally) {
-      //_updateBoxes(_draggedColumn, Offset(0, 0));
-      _updateBoxes(_draggedRow, localDeltaSnappedToCell, true);
-    } else {
-      //_updateBoxes(_draggedRow, Offset(0, 0));
-      _updateBoxes(_draggedColumn, localDeltaSnappedToCell, true);
-    }
+    return snapToCell ? _snapToCell(localDeltaSnappedToColumnAndRow) : localDeltaSnappedToColumnAndRow;
   }
 
   void _updateBoxes(Map<Offset, Box> boxes, Offset delta, bool done) {

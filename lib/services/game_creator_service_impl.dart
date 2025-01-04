@@ -5,18 +5,13 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameCreatorServiceImpl implements GameCreatorService {
-  GameCreatorServiceImpl(this.randomService);
+  GameCreatorServiceImpl(this.gameProviderService, this.randomService);
+  final GameProviderService gameProviderService;
   final RandomService randomService;
-
-  final Game _game = Game();
-
-  @override
-  Game get game => _game;
 
   @override
   void createGame() {
-    _game.boxes.clear();
-
+    gameProviderService.game.clear();
     int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
       for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
@@ -24,7 +19,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
         final proposedColour = randomService.colour;
         final colour = _getValidColour(location, proposedColour);
 
-        game.boxes.add(Box(index: index, location: location, colour: colour));
+        gameProviderService.game.add(Box(index: index, location: location, colour: colour));
         index++;
       }
     }
@@ -66,7 +61,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
   }
 
   Box? _findByLocation(Offset location) {
-    for (final box in _game.boxes) {
+    for (final box in gameProviderService.game.boxes) {
       if (box.location == location) return box;
     }
 

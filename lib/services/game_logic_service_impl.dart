@@ -7,9 +7,6 @@ class GameLogicServiceImpl extends GameLogicService {
   final GameDataService gameDataService;
 
   @override
-  Game get game => gameCreatorService.game;
-
-  @override
   bool removeContiguousBoxes() =>
       _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows().values.toList()) ||
       _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns().values.toList());
