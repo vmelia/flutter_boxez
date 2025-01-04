@@ -12,7 +12,10 @@ class GameDataServiceImpl implements GameDataService {
   Game get game => gameCreatorService.game;
 
   @override
-  void updateBoxes(List<Box> updates) => game.updateBoxes(updates);
+  void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
+
+  @override
+  void removeBoxes(List<Box> updates) => game.boxes.removeWhere((b) => updates.contains(b));
 
   @override
   Map<Offset, Box> getSelectedRow(Box box) {
@@ -60,5 +63,11 @@ class GameDataServiceImpl implements GameDataService {
     }
 
     return map;
+  }
+
+  void _updateBox(Box update) {
+    final foundBox = game.boxes.firstWhere((x) => x.index == update.index);
+    game.boxes.remove(foundBox);
+    game.boxes.add(update);
   }
 }
