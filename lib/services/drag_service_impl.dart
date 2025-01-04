@@ -17,8 +17,8 @@ class DragServiceImpl implements DragService {
     _globalStartLocation = globalLocation;
     _boxWidth = boxWidth;
 
-    _draggedRow = gameDataService.getSelectedRow(location);
-    _draggedColumn = gameDataService.getSelectedColumn(location);
+    _draggedColumn = gameDataService.getSelectedColumn(location.dx);
+    _draggedRow = gameDataService.getSelectedRow(location.dy);
   }
 
   @override
