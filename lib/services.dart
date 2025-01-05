@@ -11,8 +11,8 @@ export 'services/random_service_impl.dart';
 
 void configureServices() {
   GetIt.I.registerSingleton<RandomService>(RandomServiceImpl());
-  GetIt.I.registerSingleton<GameCreatorService>(GameCreatorServiceImpl(GetIt.I()));
   GetIt.I.registerSingleton<GameDataService>(GameDataServiceImpl());
+  GetIt.I.registerSingleton<GameCreatorService>(GameCreatorServiceImpl(GetIt.I(), GetIt.I()));
   GetIt.I.registerSingleton<GameLogicService>(GameLogicServiceImpl(GetIt.I(), GetIt.I()));
   GetIt.I.registerSingleton<DragService>(DragServiceImpl(GetIt.I()));
 }

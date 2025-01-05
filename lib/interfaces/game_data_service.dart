@@ -5,8 +5,13 @@ import '../types.dart';
 abstract class GameDataService {
   Game get game;
 
-  void initialize(Game game) {}
-  
+  void createNewGame();
+
+  Box? findByLocation(Offset location);
+
+  void add(Box box);
+  void remove(Box box);
+
   void updateBoxes(List<Box> updates);
   void removeBoxes(List<Box> updates);
 

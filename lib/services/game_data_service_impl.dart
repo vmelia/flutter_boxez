@@ -10,15 +10,30 @@ class GameDataServiceImpl implements GameDataService {
   Game get game => _game;
 
   @override
-  void initialize(Game game) {
-    _game = game;
+  void createNewGame() {
+    _game = Game();
   }
+
+  @override
+  Box? findByLocation(Offset location) {
+    for (final box in _game.boxes) {
+      if (box.location == location) return box;
+    }
+
+    return null;
+  }
+
+  @override
+  void add(Box box) => _game.boxes.add(box);
+
+  @override
+  void remove(Box box) => _game.boxes.remove(box);
 
   @override
   void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
 
   @override
-  void removeBoxes(List<Box> updates) => game.removeList(updates);
+  void removeBoxes(List<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
 
   @override
   Map<Offset, Box> getSelectedColumn(double index) {
@@ -70,7 +85,7 @@ class GameDataServiceImpl implements GameDataService {
 
   void _updateBox(Box update) {
     final foundBox = game.boxes.firstWhere((x) => x.index == update.index);
-    game.remove(foundBox);
-    game.add(update);
+    remove(foundBox);
+    add(update);
   }
 }

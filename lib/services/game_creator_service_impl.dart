@@ -5,16 +5,15 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameCreatorServiceImpl implements GameCreatorService {
-  GameCreatorServiceImpl(this.randomService);
+  GameCreatorServiceImpl(this.gameDataService, this.randomService);
+  final GameDataService gameDataService;
   final RandomService randomService;
-
-  late Game game;
 
   @override
   Game createGame() => _createGame();
 
   Game _createGame() {
-    game = Game();
+    gameDataService.createNewGame();
     int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
       for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
@@ -22,12 +21,12 @@ class GameCreatorServiceImpl implements GameCreatorService {
         final proposedValue = randomService.value;
         final value = _getValidValue(location, proposedValue);
 
-        game.add(Box(index: index, location: location, value: value));
+        gameDataService.add(Box(index: index, location: location, value: value));
         index++;
       }
     }
 
-    return game;
+    return gameDataService.game;
   }
 
   // Game _createTestGame() {
@@ -66,7 +65,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
       _locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
 
   bool _containsTheSameValue(Offset location, int valueToCheck) {
-    final box = game.findByLocation(location);
+    final box = gameDataService.findByLocation(location);
     return box != null && box.value == valueToCheck;
   }
 
