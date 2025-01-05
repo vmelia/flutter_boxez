@@ -148,10 +148,28 @@ void main() {
     });
   });
 
-  group('xxxx', () {
-    test('xxxx', () {});
+  group('getAllColumns', () {
+    test('returns all columns', () {
+      createTestGame();
+
+      final result = gameDataService.getAllColumns();
+
+      expect(result.length, 3);
+      expect(result.toList()[0], [box0, box3, box6]);
+      expect(result.toList()[1], [box1, box4, box7]);
+      expect(result.toList()[2], [box2, box5, box8]);
+    });
   });
-  group('xxxx', () {
-    test('xxxx', () {});
+  group('getAllRows', () {
+     test('returns all rows', () {
+      createTestGame();
+
+      final result = gameDataService.getAllRows();
+
+      expect(result.length, 3);
+      expect(result.toList()[0], [box0, box1, box2]);
+      expect(result.toList()[1], [box3, box4, box5]);
+      expect(result.toList()[2], [box6, box7, box8]);
+    });
   });
 }
