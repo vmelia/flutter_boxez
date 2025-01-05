@@ -3,6 +3,10 @@ import 'dart:ui';
 import '../types.dart';
 
 abstract class GameDataService {
+  Game get game;
+
+  void initialize(Game game) {}
+  
   void updateBoxes(List<Box> updates);
   void removeBoxes(List<Box> updates);
 

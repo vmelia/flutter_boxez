@@ -5,17 +5,16 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameCreatorServiceImpl implements GameCreatorService {
-  GameCreatorServiceImpl(this.gameProviderService, this.randomService);
-  final GameProviderService gameProviderService;
+  GameCreatorServiceImpl(this.randomService);
   final RandomService randomService;
 
-  @override
-  void createGame() {
-    _createGame();
-  }
+  late Game game;
 
-  void _createGame() {
-    gameProviderService.game.clear();
+  @override
+  Game createGame() => _createGame();
+
+  Game _createGame() {
+    game = Game();
     int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
       for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
@@ -23,23 +22,26 @@ class GameCreatorServiceImpl implements GameCreatorService {
         final proposedValue = randomService.value;
         final value = _getValidValue(location, proposedValue);
 
-        gameProviderService.game.add(Box(index: index, location: location, value: value));
+        game.add(Box(index: index, location: location, value: value));
         index++;
       }
     }
+
+    return game;
   }
 
-  // void _createTestGame() {
-  //   gameProviderService.game.clear();
-  //   gameProviderService.game.add(Box(index: 0, location: Offset(-1, -1), value: 0));
-  //   gameProviderService.game.add(Box(index: 1, location: Offset(-1, 0), value: 2));
-  //   gameProviderService.game.add(Box(index: 2, location: Offset(-1, 1), value: 0));
-  //   gameProviderService.game.add(Box(index: 3, location: Offset(0, -1), value: 2));
-  //   gameProviderService.game.add(Box(index: 4, location: Offset(0, 0), value: 4));
-  //   gameProviderService.game.add(Box(index: 5, location: Offset(0, 1), value: 2));
-  //   gameProviderService.game.add(Box(index: 6, location: Offset(1, -1), value: 0));
-  //   gameProviderService.game.add(Box(index: 7, location: Offset(1, 0), value: 2));
-  //   gameProviderService.game.add(Box(index: 8, location: Offset(1, 1), value: 0));
+  // Game _createTestGame() {
+  //   final game = Game()
+  //   gameDataService.game.add(Box(index: 0, location: Offset(-1, -1), value: 0));
+  //   gameDataService.game.add(Box(index: 1, location: Offset(-1, 0), value: 2));
+  //   gameDataService.game.add(Box(index: 2, location: Offset(-1, 1), value: 0));
+  //   gameDataService.game.add(Box(index: 3, location: Offset(0, -1), value: 2));
+  //   gameDataService.game.add(Box(index: 4, location: Offset(0, 0), value: 4));
+  //   gameDataService.game.add(Box(index: 5, location: Offset(0, 1), value: 2));
+  //   gameDataService.game.add(Box(index: 6, location: Offset(1, -1), value: 0));
+  //   gameDataService.game.add(Box(index: 7, location: Offset(1, 0), value: 2));
+  //   gameDataService.game.add(Box(index: 8, location: Offset(1, 1), value: 0));
+  //   return game;
   // }
 
   int _getValidValue(Offset location, int proposedValue) {
@@ -61,10 +63,10 @@ class GameCreatorServiceImpl implements GameCreatorService {
   }
 
   bool _locationValueMatches(double x, double y, int valueToCheck) =>
-      gameProviderService.game.locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
+      game.locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
 
   bool _containsTheSameValue(Offset location, int valueToCheck) {
-    final box = gameProviderService.game.findByLocation(location);
+    final box = game.findByLocation(location);
     return box != null && box.value == valueToCheck;
   }
 }
