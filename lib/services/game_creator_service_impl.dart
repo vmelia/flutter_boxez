@@ -25,18 +25,18 @@ class GameCreatorServiceImpl implements GameCreatorService {
     }
   }
 
-  void _createTestGame() {
-    gameDataService.createEmptyGame();
-    gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
-    gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
-    gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
-    gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
-    gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
-    gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
-    gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
-    gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
-    gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
-  }
+  // void _createTestGame() {
+  //   gameDataService.createEmptyGame();
+  //   gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
+  //   gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
+  //   gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
+  //   gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
+  //   gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
+  //   gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
+  //   gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
+  //   gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
+  //   gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
+  // }
 
   int _getValidValue(Location location, int proposedValue) {
     for (var i = 0; i < Colours.count; i++) {

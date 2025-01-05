@@ -63,7 +63,7 @@ class GameDataServiceImpl implements GameDataService {
     for (final b in game.boxes) {
       final col = map.putIfAbsent(b.location.dx, () => <Box>[]);
       col.add(b);
-      col.sort((a, b) => a.location.dx.compareTo(b.location.dx));
+      col.sort((a, b) => a.location.dy.compareTo(b.location.dy));
     }
 
     return map.values;
@@ -75,7 +75,7 @@ class GameDataServiceImpl implements GameDataService {
     for (final b in game.boxes) {
       final row = map.putIfAbsent(b.location.dy, () => <Box>[]);
       row.add(b);
-      row.sort((a, b) => a.location.dy.compareTo(b.location.dy));
+      row.sort((a, b) => a.location.dx.compareTo(b.location.dx));
     }
 
     return map.values;
