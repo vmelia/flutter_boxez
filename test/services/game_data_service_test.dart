@@ -8,6 +8,7 @@ void main() {
 
   setUp(() {
     gameDataService = GameDataServiceImpl();
+    gameDataService.createNewGame();
   });
 
   Box createBox(int i) => Box(index: i, location: Offset(i.toDouble(), i.toDouble()), value: i);

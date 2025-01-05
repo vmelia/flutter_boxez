@@ -4,7 +4,7 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameDataServiceImpl implements GameDataService {
-  Game _game = Game();
+  late Game _game;
 
   @override
   Game get game => _game;
