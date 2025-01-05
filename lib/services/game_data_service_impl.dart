@@ -28,10 +28,10 @@ class GameDataServiceImpl implements GameDataService {
   void remove(Box box) => _game.boxes.remove(box);
 
   @override
-  void removeBoxes(List<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
+  void removeBoxes(Set<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
 
   @override
-  void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
+  void updateBoxes(Set<Box> updates) => updates.forEach(_updateBox);
 
   @override
   Map<Location, Box> getSelectedColumn(int index) {

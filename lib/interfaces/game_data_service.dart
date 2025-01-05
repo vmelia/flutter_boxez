@@ -9,11 +9,11 @@ abstract class GameDataService {
 
   void add(Box box);
   void remove(Box box);
-  void removeBoxes(List<Box> updates);
+  void removeBoxes(Set<Box> updates);
 
   // Update boxes functionality.
   // Note: Because Box is immutable, we have to remove old versions and add new ones (based on index).
-  void updateBoxes(List<Box> updates);
+  void updateBoxes(Set<Box> updates);
 
   // Returns a map of boxes that are in the same column/row as the index.
   // The mapped key is the original location of the box - so we can reset if required.

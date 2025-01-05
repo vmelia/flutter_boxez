@@ -36,20 +36,19 @@ class GameCubit extends Cubit<GameState> {
     emit(GameState(game: gameDataService.game));
   }
 
-  void boxesMoving(List<Box> updates) {
+  void boxesMoving(Set<Box> updates) {
     emit(GameState.initial());
     gameDataService.updateBoxes(updates);
     emit(GameState(game: gameDataService.game));
   }
 
-  void boxesFinished(List<Box> updates) {
+  void boxesFinished(Set<Box> updates) {
     emit(GameState.initial());
     gameDataService.updateBoxes(updates);
     emit(GameState(game: gameDataService.game));
 
     final anyRemoved = gameLogicService.removeContiguousBoxes();
     if (anyRemoved) {
-      emit(GameState.initial());
       emit(GameState(game: gameDataService.game));
     }
   }

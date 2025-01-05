@@ -44,13 +44,34 @@ void main() {
       expect(result, true);
       expect(gameDataService.removed, [box1, box2, box3]);
     });
+    test('removes three in a column and row correctly', () {
+      final box0 = Box(index: 0, location: Location(0, -2), value: 0);
+      final box1 = Box(index: 1, location: Location(0, -1), value: 1);
+      final box2 = Box(index: 2, location: Location(0, 0), value: 1);
+      final box3 = Box(index: 3, location: Location(0, 1), value: 1);
+      final box4 = Box(index: 4, location: Location(0, 2), value: 0);
+      final box5 = Box(index: 5, location: Location(-2, 0), value: 0);
+      final box6 = Box(index: 6, location: Location(-1, 0), value: 1);
+      final box7 = Box(index: 7, location: Location(1, 0), value: 1);
+      final box8 = Box(index: 8, location: Location(2, 0), value: 0);
+
+      final column = [box0, box1, box2, box3, box4];
+      gameDataService.allColumns = [column];
+      final row = [box5, box6, box2, box7, box8];
+      gameDataService.allRows = [row];
+
+      final result = gameLogicService.removeContiguousBoxes();
+
+      expect(result, true);
+      expect(gameDataService.removed, [box1, box2, box3, box6, box7]);
+    });
   });
 }
 
 class MockGameDataService extends GameDataService {
   late Iterable<List<Box>> allColumns = List<List<Box>>.empty();
   late Iterable<List<Box>> allRows = List<List<Box>>.empty();
-  late List<Box> removed = <Box>[];
+  late Set<Box> removed = <Box>{};
 
   @override
   void add(Box box) {}
@@ -80,8 +101,8 @@ class MockGameDataService extends GameDataService {
   void remove(Box box) {}
 
   @override
-  void removeBoxes(List<Box> updates) => removed = updates;
+  void removeBoxes(Set<Box> updates) => removed = updates;
 
   @override
-  void updateBoxes(List<Box> updates) {}
+  void updateBoxes(Set<Box> updates) {}
 }

@@ -79,7 +79,7 @@ class DragServiceImpl implements DragService {
   }
 
   void _updateBoxes(Map<Location, Box> boxes, Location delta, bool done) {
-    List<Box> updatedBoxes = <Box>[];
+    final updatedBoxes = <Box>{};
     for (final entry in boxes.entries) {
       final updatedBox = entry.value.copyWith(location: entry.key + delta);
       updatedBoxes.add(updatedBox);

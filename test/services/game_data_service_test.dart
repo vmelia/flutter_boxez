@@ -100,7 +100,7 @@ void main() {
     test('removes boxes correctly', () {
       addThreeBoxes();
 
-      gameDataService.removeBoxes([box0, box2]);
+      gameDataService.removeBoxes({box0, box2});
 
       expect(gameDataService.game.boxes.length, 1);
       expect(gameDataService.game.boxes.toList()[0], box1); // Unchanged.
@@ -114,7 +114,7 @@ void main() {
       final newBox0 = Box(index: 0, location: Location(10, 10), value: 0);
       final newBox2 = Box(index: 2, location: Location(12, 12), value: 2);
 
-      gameDataService.updateBoxes([newBox0, newBox2]);
+      gameDataService.updateBoxes({newBox0, newBox2});
 
       expect(gameDataService.game.boxes.length, 3);
       expect(gameDataService.game.boxes.toList()[0], box1); // Unchanged.
@@ -161,7 +161,7 @@ void main() {
     });
   });
   group('getAllRows', () {
-     test('returns all rows', () {
+    test('returns all rows', () {
       createTestGame();
 
       final result = gameDataService.getAllRows();

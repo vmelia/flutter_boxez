@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import '../types.dart';
 
-typedef BoxesUpdated = void Function(List<Box> updates);
+typedef BoxesUpdated = void Function(Set<Box> updates);
 
 abstract class DragService {
   void onPanStart(Offset dragLocation, Location location, double boxWidth);
