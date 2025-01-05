@@ -13,7 +13,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
   Game createGame() => _createGame();
 
   Game _createGame() {
-    gameDataService.createNewGame();
+    gameDataService.createEmptyGame();
     int index = 0;
     for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
       for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {

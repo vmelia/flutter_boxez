@@ -10,7 +10,7 @@ class GameDataServiceImpl implements GameDataService {
   Game get game => _game;
 
   @override
-  void createNewGame() {
+  void createEmptyGame() {
     _game = Game();
   }
 
@@ -30,10 +30,10 @@ class GameDataServiceImpl implements GameDataService {
   void remove(Box box) => _game.boxes.remove(box);
 
   @override
-  void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
+  void removeBoxes(List<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
 
   @override
-  void removeBoxes(List<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
+  void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
 
   @override
   Map<Offset, Box> getSelectedColumn(double index) {
