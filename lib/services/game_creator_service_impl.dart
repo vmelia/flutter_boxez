@@ -2,7 +2,7 @@ import '../helpers.dart';
 import '../interfaces.dart';
 import '../types.dart';
 
-class GameCreatorServiceImpl implements GameCreatorService {
+class GameCreatorServiceImpl extends GameCreatorService {
   GameCreatorServiceImpl(this.gameDataService, this.randomService);
   final GameDataService gameDataService;
   final RandomService randomService;

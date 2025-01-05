@@ -1,7 +1,7 @@
 import '../interfaces.dart';
 import '../types.dart';
 
-class GameDataServiceImpl implements GameDataService {
+class GameDataServiceImpl extends GameDataService {
   late Game _game;
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter_boxez/types.dart';
 
 import '../interfaces.dart';
 
-class DragServiceImpl implements DragService {
+class DragServiceImpl extends DragService {
   DragServiceImpl(this.gameDataService);
   final GameDataService gameDataService;
 
@@ -31,12 +31,6 @@ class DragServiceImpl implements DragService {
     _finishedMovingBoxes(globalLocation);
     _reset();
   }
-
-  @override
-  BoxesUpdated? boxesFinished;
-
-  @override
-  BoxesUpdated? boxesMoving;
 
   void _stillMovingBoxes(Offset globalLocation) {
     final draggingingHorizontally = _draggingHorizontally(globalLocation);

@@ -4,7 +4,7 @@ import '../helpers.dart';
 import '../interfaces.dart';
 import '../types.dart';
 
-class RandomServiceImpl implements RandomService {
+class RandomServiceImpl extends RandomService {
   final Random _random = Random();
 
   @override

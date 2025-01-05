@@ -3,9 +3,9 @@ import 'dart:ui';
 import '../types.dart';
 
 abstract class DragService {
-  void onPanStart(Offset dragLocation, Location location, double boxWidth);
-  void onPanUpdate(Offset dragLocation);
-  void onPanEnd(Offset dragLocation);
+  void onPanStart(Offset globalLocation, Location location, double boxWidth);
+  void onPanUpdate(Offset globalLocation);
+  void onPanEnd(Offset globalLocation);
 
   BoxesUpdated? boxesMoving;
   BoxesUpdated? boxesFinished;
