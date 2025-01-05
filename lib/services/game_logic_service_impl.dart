@@ -25,7 +25,7 @@ class GameLogicServiceImpl extends GameLogicService {
 
   @override
   void plugGaps() {
-    final clonedGame = Game.clone(gameDataService.game);  //TODO: Needed?
+    final clonedGame = Game.clone(gameDataService.game); //TODO: Needed?
     final distSortedBoxes = clonedGame.boxes;
     distSortedBoxes.sort((a, b) => a.location.distanceSquared.compareTo(b.location.distanceSquared));
 
@@ -45,6 +45,7 @@ class GameLogicServiceImpl extends GameLogicService {
         if (gameDataService.findByLocation(newLocation) == null) {
           final updatedBox = box.copyWith(location: newLocation);
           updatedBoxes.add(updatedBox);
+          break;
         }
       }
     }

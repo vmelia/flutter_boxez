@@ -32,7 +32,6 @@ class GameCubit extends Cubit<GameState> {
   final DragService dragService;
 
   void createGame() {
-    emit(GameState.initial());
     gameCreatorService.createGame();
     emit(GameState(game: gameDataService.game));
   }
