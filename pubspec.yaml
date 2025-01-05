@@ -13,7 +13,8 @@ dependencies:
   bloc: any
   flutter_bloc: any
   equatable: any
-
+  parameterized_test: any
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

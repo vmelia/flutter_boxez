@@ -12,7 +12,7 @@ class RandomServiceImpl implements RandomService {
   Offset get location => Offset(_nextLocationValue(), _nextLocationValue());
 
   @override
-  int get colour => _next(Colours.count);
+  int get value => _next(Colours.count);
 
   double _nextLocationValue() => (_next(Constants.gridSize.toInt())) - Constants.cellOffset;
   int _next(int max) => _random.nextInt(max);

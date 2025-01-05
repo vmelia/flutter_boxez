@@ -6,24 +6,24 @@ class Box extends Equatable {
   const Box({
     required this.index,
     required this.location,
-    required this.colour,
+    required this.value,
   });
   final int index;
   final Offset location;
-  final int colour;
+  final int value;
   
   @override
-  List<Object?> get props => [index, location, colour];
+  List<Object?> get props => [index, location, value];
 
   Box copyWith({
     int? index,
     Offset? location,
-    int? colour,
+    int? value,
 
   }) =>
       Box(
         index: index ?? this.index,
         location: location ?? this.location,
-        colour: colour ?? this.colour,
+        value: value ?? this.value,
       );
 }

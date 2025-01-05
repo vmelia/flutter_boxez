@@ -29,7 +29,7 @@ class GameLogicServiceImpl extends GameLogicService {
       Box? lastBox;
       List<Box> run = <Box>[];
       for (final b in columnOrRow) {
-        if (lastBox == null || lastBox.colour != b.colour) {
+        if (lastBox == null || lastBox.value != b.value) {
           // Start new run.
           if (run.length >= Constants.matchesRequired) {
             boxesToRemove.addAll(run);

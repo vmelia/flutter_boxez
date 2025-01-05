@@ -17,11 +17,10 @@ class BoxWidget extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colours.convertToColour(box.colour).withAlpha(Constants.boxGradientAlpha),
-              Colours.convertToColour(box.colour),
+              Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
+              Colours.convertToColour(box.value),
             ],
           ),
-          color: Colours.convertToColour(box.colour),
           borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
         ),
       ),
