@@ -2,18 +2,16 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameLogicServiceImpl extends GameLogicService {
-  GameLogicServiceImpl(this.gameCreatorService, this.gameDataService);
-  final GameCreatorService gameCreatorService;
+  GameLogicServiceImpl(this.gameDataService);
   final GameDataService gameDataService;
 
   @override
   bool removeContiguousBoxes() {
     final boxesToRemove = <Box>[];
-    final rowBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows());
-    boxesToRemove.addAll(rowBoxes);
-
     final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
     boxesToRemove.addAll(columnBoxes);
+    final rowBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows());
+    boxesToRemove.addAll(rowBoxes);
 
     if (boxesToRemove.isNotEmpty) {
       gameDataService.removeBoxes(boxesToRemove);
