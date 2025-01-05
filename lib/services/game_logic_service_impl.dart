@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../interfaces.dart';
 import '../types.dart';
 
@@ -19,6 +21,37 @@ class GameLogicServiceImpl extends GameLogicService {
     }
 
     return false;
+  }
+
+  @override
+  void plugGaps() {
+    final clonedGame = Game.clone(gameDataService.game);  //TODO: Needed?
+    final distSortedBoxes = clonedGame.boxes;
+    distSortedBoxes.sort((a, b) => a.location.distanceSquared.compareTo(b.location.distanceSquared));
+
+    final updatedBoxes = <Box>{};
+    for (final box in distSortedBoxes) {
+      final possibleMoves = <double>[];
+      Location centreOffset = Location.zero() - box.location;
+      for (final cardinal in Constants.cardinals) {
+        final angleDelta = (cardinal - centreOffset.direction).abs();
+        if (angleDelta < pi / 3) {
+          possibleMoves.add(angleDelta);
+        }
+      }
+
+      for (final move in possibleMoves) {
+        final newLocation = box.location + Location.fromDirection(move);
+        if (gameDataService.findByLocation(newLocation) == null) {
+          final updatedBox = box.copyWith(location: newLocation);
+          updatedBoxes.add(updatedBox);
+        }
+      }
+    }
+
+    if (updatedBoxes.isNotEmpty) {
+      boxesMoving!(updatedBoxes);
+    }
   }
 
   List<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
@@ -43,7 +76,7 @@ class GameLogicServiceImpl extends GameLogicService {
         lastBox = b;
       }
 
-      if (run.length >= 3) {
+      if (run.length >= Constants.matchesRequired) {
         boxesToRemove.addAll(run);
       }
     }

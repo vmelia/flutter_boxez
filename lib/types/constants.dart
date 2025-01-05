@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class Constants {
   // Game.
   static const int gridStart = -3;
@@ -10,4 +12,7 @@ class Constants {
   static const double boxPadding = 1.0;
   static const double boxRadius = 30.0;
   static const int boxGradientAlpha = 100;
+
+  // Misc.
+  static List<double> cardinals = [-pi, -pi/2, 0, pi/2, pi];
 }

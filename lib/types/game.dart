@@ -14,6 +14,8 @@ class Game extends Equatable {
   final List<Box> _boxes = <Box>[];
   List<Box> get boxes => _boxes;
 
+  //TODO: Add readonly/cloned boxes?
+
   @override
   List<Object?> get props => [_boxes];
 }

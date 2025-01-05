@@ -43,10 +43,10 @@ class DragServiceImpl implements DragService {
     final localDelta = _calculatelocalDelta(globalLocation, false);
 
     if (draggingingHorizontally) {
-      _updateBoxes(_draggedColumn, Location(0, 0), false);
+      _updateBoxes(_draggedColumn, Location.zero(), false);
       _updateBoxes(_draggedRow, localDelta, false);
     } else {
-      _updateBoxes(_draggedRow, Location(0, 0), false);
+      _updateBoxes(_draggedRow, Location.zero(), false);
       _updateBoxes(_draggedColumn, localDelta, false);
     }
   }
