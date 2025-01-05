@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import '../types.dart';
 
 abstract class GameDataService {
@@ -7,7 +5,7 @@ abstract class GameDataService {
 
   void createEmptyGame();
 
-  Box? findByLocation(Offset location);
+  Box? findByLocation(Location location);
 
   void add(Box box);
   void remove(Box box);
@@ -19,8 +17,8 @@ abstract class GameDataService {
 
   // Returns a map of boxes that are in the same column/row as the index.
   // The mapped key is the original location of the box - so we can reset if required.
-  Map<Offset, Box> getSelectedColumn(double index);
-  Map<Offset, Box> getSelectedRow(double index);
+  Map<Location, Box> getSelectedColumn(int index);
+  Map<Location, Box> getSelectedRow(int index);
 
   // Returns a list of all columns/row.
   Iterable<List<Box>> getAllColumns();

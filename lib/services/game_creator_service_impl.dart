@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import '../helpers.dart';
 import '../interfaces.dart';
 import '../types.dart';
@@ -15,9 +13,9 @@ class GameCreatorServiceImpl implements GameCreatorService {
   Game _createGame() {
     gameDataService.createEmptyGame();
     int index = 0;
-    for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
-      for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
-        final location = Offset(x, y);
+    for (var dx = Constants.gridStart; dx <= Constants.gridEnd; dx++) {
+      for (var dy = Constants.gridStart; dy <= Constants.gridEnd; dy++) {
+        final location = Location(dx.toDouble(), dy.toDouble());
         final proposedValue = randomService.value;
         final value = _getValidValue(location, proposedValue);
 
@@ -43,7 +41,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
   //   return game;
   // }
 
-  int _getValidValue(Offset location, int proposedValue) {
+  int _getValidValue(Location location, int proposedValue) {
     for (var i = 0; i < Colours.count; i++) {
       final valueToCheck = (proposedValue + i) % Colours.count;
       if (_canPlaceValue(location, valueToCheck)) return valueToCheck;
@@ -52,7 +50,7 @@ class GameCreatorServiceImpl implements GameCreatorService {
     return -1; // Error.
   }
 
-  bool _canPlaceValue(Offset location, int valueToCheck) {
+  bool _canPlaceValue(Location location, int valueToCheck) {
     if (_locationValueMatches(location.dx - 1, location.dy, valueToCheck)) return false;
     if (_locationValueMatches(location.dx + 1, location.dy, valueToCheck)) return false;
     if (_locationValueMatches(location.dx, location.dy - 1, valueToCheck)) return false;
@@ -61,15 +59,15 @@ class GameCreatorServiceImpl implements GameCreatorService {
     return true;
   }
 
-  bool _locationValueMatches(double x, double y, int valueToCheck) =>
-      _locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
+  bool _locationValueMatches(double dx, double dy, int valueToCheck) =>
+      _locationExists(Location(dx, dy)) && _containsTheSameValue(Location(dx, dy), valueToCheck);
 
-  bool _containsTheSameValue(Offset location, int valueToCheck) {
+  bool _containsTheSameValue(Location location, int valueToCheck) {
     final box = gameDataService.findByLocation(location);
     return box != null && box.value == valueToCheck;
   }
 
-  bool _locationExists(Offset location) {
+  bool _locationExists(Location location) {
     if (location.dx < Constants.gridStart) return false;
     if (location.dy < Constants.gridStart) return false;
     if (location.dx > Constants.gridEnd) return false;

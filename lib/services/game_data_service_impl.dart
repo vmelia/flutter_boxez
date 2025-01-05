@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import '../interfaces.dart';
 import '../types.dart';
 
@@ -15,7 +13,7 @@ class GameDataServiceImpl implements GameDataService {
   }
 
   @override
-  Box? findByLocation(Offset location) {
+  Box? findByLocation(Location location) {
     for (final box in _game.boxes) {
       if (box.location == location) return box;
     }
@@ -36,8 +34,8 @@ class GameDataServiceImpl implements GameDataService {
   void updateBoxes(List<Box> updates) => updates.forEach(_updateBox);
 
   @override
-  Map<Offset, Box> getSelectedColumn(double index) {
-    final map = <Offset, Box>{};
+  Map<Location, Box> getSelectedColumn(int index) {
+    final map = <Location, Box>{};
     for (final b in game.boxes) {
       if (b.location.dx == index) {
         map[b.location] = b;
@@ -48,8 +46,8 @@ class GameDataServiceImpl implements GameDataService {
   }
 
   @override
-  Map<Offset, Box> getSelectedRow(double index) {
-    final map = <Offset, Box>{};
+  Map<Location, Box> getSelectedRow(int index) {
+    final map = <Location, Box>{};
     for (final b in game.boxes) {
       if (b.location.dy == index) {
         map[b.location] = b;

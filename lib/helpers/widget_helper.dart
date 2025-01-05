@@ -24,7 +24,7 @@ class WidgetHelper {
     return null;
   }
 
-  static Rect getRect(Offset location, BuildContext context) {
+  static Rect getRect(Location location, BuildContext context) {
     final boxWidth = screenSize(context).shortestSide / Constants.gridSize;
     final x = screenSize(context).width / 2 + location.dx * boxWidth;
     final y = screenSize(context).height / 2 + location.dy * boxWidth;

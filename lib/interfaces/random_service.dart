@@ -1,6 +1,6 @@
-import 'dart:ui';
+import '../types.dart';
 
 abstract class RandomService {
-  Offset get location;
+  Location get location;
   int get value;
 }

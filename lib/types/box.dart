@@ -1,6 +1,6 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
+
+import '../types.dart';
 
 class Box extends Equatable {
   const Box({
@@ -9,7 +9,7 @@ class Box extends Equatable {
     required this.value,
   });
   final int index;
-  final Offset location;
+  final Location location;
   final int value;
   
   @override
@@ -17,7 +17,7 @@ class Box extends Equatable {
 
   Box copyWith({
     int? index,
-    Offset? location,
+    Location? location,
     int? value,
 
   }) =>

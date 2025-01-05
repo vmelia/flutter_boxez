@@ -9,16 +9,16 @@ class DragServiceImpl implements DragService {
 
   late double _boxWidth;
   late Offset? _globalStartLocation;
-  late Map<Offset, Box> _draggedRow;
-  late Map<Offset, Box> _draggedColumn;
+  late Map<Location, Box> _draggedRow;
+  late Map<Location, Box> _draggedColumn;
 
   @override
-  void onPanStart(Offset globalLocation, Offset location, double boxWidth) {
+  void onPanStart(Offset globalLocation, Location location, double boxWidth) {
     _globalStartLocation = globalLocation;
     _boxWidth = boxWidth;
 
-    _draggedColumn = gameDataService.getSelectedColumn(location.dx);
-    _draggedRow = gameDataService.getSelectedRow(location.dy);
+    _draggedColumn = gameDataService.getSelectedColumn(location.dx.toInt());
+    _draggedRow = gameDataService.getSelectedRow(location.dy.toInt());
   }
 
   @override
@@ -43,10 +43,10 @@ class DragServiceImpl implements DragService {
     final localDelta = _calculatelocalDelta(globalLocation, false);
 
     if (draggingingHorizontally) {
-      _updateBoxes(_draggedColumn, Offset(0, 0), false);
+      _updateBoxes(_draggedColumn, Location(0, 0), false);
       _updateBoxes(_draggedRow, localDelta, false);
     } else {
-      _updateBoxes(_draggedRow, Offset(0, 0), false);
+      _updateBoxes(_draggedRow, Location(0, 0), false);
       _updateBoxes(_draggedColumn, localDelta, false);
     }
   }
@@ -67,17 +67,18 @@ class DragServiceImpl implements DragService {
     return globalDelta.dx.abs() > globalDelta.dy.abs();
   }
 
-  Offset _calculatelocalDelta(Offset globalLocation, bool snapToCell) {
+  Location _calculatelocalDelta(Offset globalLocation, bool snapToCell) {
     final globalDelta = globalLocation - _globalStartLocation!;
     final draggingingHorizontally = globalDelta.dx.abs() > globalDelta.dy.abs();
 
     final localDelta = globalDelta / _boxWidth;
-    final localDeltaSnappedToColumnAndRow = draggingingHorizontally ? Offset(localDelta.dx, 0) : Offset(0, localDelta.dy);
+    final localDeltaSnappedToColumnAndRow =
+        draggingingHorizontally ? Location(localDelta.dx, 0) : Location(0, localDelta.dy);
 
     return snapToCell ? _snapToCell(localDeltaSnappedToColumnAndRow) : localDeltaSnappedToColumnAndRow;
   }
 
-  void _updateBoxes(Map<Offset, Box> boxes, Offset delta, bool done) {
+  void _updateBoxes(Map<Location, Box> boxes, Location delta, bool done) {
     List<Box> updatedBoxes = <Box>[];
     for (final entry in boxes.entries) {
       final updatedBox = entry.value.copyWith(location: entry.key + delta);
@@ -91,7 +92,8 @@ class DragServiceImpl implements DragService {
     }
   }
 
-  _snapToCell(Offset localLocation) => Offset(localLocation.dx.round().toDouble(), localLocation.dy.round().toDouble());
+  _snapToCell(Location localLocation) =>
+    Location(localLocation.dx.round().toDouble(), localLocation.dy.round().toDouble());
 
   _reset() {
     _globalStartLocation = null;
