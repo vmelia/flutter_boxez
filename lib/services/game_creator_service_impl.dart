@@ -63,10 +63,19 @@ class GameCreatorServiceImpl implements GameCreatorService {
   }
 
   bool _locationValueMatches(double x, double y, int valueToCheck) =>
-      game.locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
+      _locationExists(Offset(x, y)) && _containsTheSameValue(Offset(x, y), valueToCheck);
 
   bool _containsTheSameValue(Offset location, int valueToCheck) {
     final box = game.findByLocation(location);
     return box != null && box.value == valueToCheck;
+  }
+
+  bool _locationExists(Offset location) {
+    if (location.dx < Constants.gridStart) return false;
+    if (location.dy < Constants.gridStart) return false;
+    if (location.dx > Constants.gridEnd) return false;
+    if (location.dy > Constants.gridEnd) return false;
+
+    return true;
   }
 }

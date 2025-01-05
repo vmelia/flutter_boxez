@@ -14,15 +14,6 @@ class Game extends Equatable {
   void removeList(List<Box> list) => _boxes.removeWhere((box) => list.contains(box));
   void clear() => _boxes.clear();
 
-  bool locationExists(Offset location) {
-    if (location.dx < Constants.gridStart) return false;
-    if (location.dy < Constants.gridStart) return false;
-    if (location.dx > Constants.gridEnd) return false;
-    if (location.dy > Constants.gridEnd) return false;
-
-    return true;
-  }
-
   Box? findByLocation(Offset location) {
     for (final box in boxes) {
       if (box.location == location) return box;
