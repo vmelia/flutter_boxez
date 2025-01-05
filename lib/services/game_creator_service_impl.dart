@@ -8,9 +8,9 @@ class GameCreatorServiceImpl implements GameCreatorService {
   final RandomService randomService;
 
   @override
-  Game createGame() => _createGame();
+  void createGame() => _createGame();
 
-  Game _createGame() {
+  void _createGame() {
     gameDataService.createEmptyGame();
     int index = 0;
     for (var dx = Constants.gridStart; dx <= Constants.gridEnd; dx++) {
@@ -23,23 +23,20 @@ class GameCreatorServiceImpl implements GameCreatorService {
         index++;
       }
     }
-
-    return gameDataService.game;
   }
 
-  // Game _createTestGame() {
-  //   final game = Game()
-  //   gameDataService.game.add(Box(index: 0, location: Offset(-1, -1), value: 0));
-  //   gameDataService.game.add(Box(index: 1, location: Offset(-1, 0), value: 2));
-  //   gameDataService.game.add(Box(index: 2, location: Offset(-1, 1), value: 0));
-  //   gameDataService.game.add(Box(index: 3, location: Offset(0, -1), value: 2));
-  //   gameDataService.game.add(Box(index: 4, location: Offset(0, 0), value: 4));
-  //   gameDataService.game.add(Box(index: 5, location: Offset(0, 1), value: 2));
-  //   gameDataService.game.add(Box(index: 6, location: Offset(1, -1), value: 0));
-  //   gameDataService.game.add(Box(index: 7, location: Offset(1, 0), value: 2));
-  //   gameDataService.game.add(Box(index: 8, location: Offset(1, 1), value: 0));
-  //   return game;
-  // }
+  void _createTestGame() {
+    gameDataService.createEmptyGame();
+    gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
+    gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
+    gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
+    gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
+    gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
+    gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
+    gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
+    gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
+    gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
+  }
 
   int _getValidValue(Location location, int proposedValue) {
     for (var i = 0; i < Colours.count; i++) {
