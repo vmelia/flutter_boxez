@@ -12,7 +12,9 @@ abstract class GameDataService {
   void add(Box box);
   void remove(Box box);
 
+  // Matches indexes of existing boxes and replaces them with new ones.
   void updateBoxes(List<Box> updates);
+  
   void removeBoxes(List<Box> updates);
 
   // Returns a map of boxes that are in the same column/row as the index.
