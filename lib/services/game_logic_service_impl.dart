@@ -27,7 +27,7 @@ class GameLogicServiceImpl extends GameLogicService {
       Box? lastBox;
       List<Box> run = <Box>[];
       for (final b in columnOrRow) {
-        if (lastBox == null || lastBox.value != b.value) {
+        if (lastBox == null || lastBox.value != b.value || !_boxesTouch(lastBox, b)) {
           // Start new run.
           if (run.length >= Constants.matchesRequired) {
             boxesToRemove.addAll(run);
@@ -49,5 +49,12 @@ class GameLogicServiceImpl extends GameLogicService {
     }
 
     return boxesToRemove;
+  }
+
+  bool _boxesTouch(Box lastBox, Box b) {
+    if ((lastBox.location.dx - b.location.dx).abs() > 1) return false;
+    if ((lastBox.location.dy - b.location.dy).abs() > 1) return false;
+
+    return true;
   }
 }

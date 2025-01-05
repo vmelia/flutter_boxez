@@ -65,6 +65,36 @@ void main() {
       expect(result, true);
       expect(gameDataService.removed, [box1, box2, box3, box6, box7]);
     });
+    test('ignores column sequence with gaps', () {
+      final box0 = Box(index: 0, location: Location(0, -2), value: 0);
+      final box1 = Box(index: 1, location: Location(0, -1), value: 0);
+      // No value at (0, 0).
+      final box3 = Box(index: 3, location: Location(0, 1), value: 0);
+      final box4 = Box(index: 4, location: Location(0, 2), value: 0);
+
+      final column = [box0, box1, box3, box4];
+      gameDataService.allColumns = [column];
+
+      final result = gameLogicService.removeContiguousBoxes();
+
+      expect(result, false);
+      expect(gameDataService.removed, []);
+    });
+    test('ignores row sequence with gaps', () {
+      final box0 = Box(index: 0, location: Location(-2, 0), value: 0);
+      final box1 = Box(index: 1, location: Location(-1, 0), value: 0);
+      // No value at (0, 0).
+      final box3 = Box(index: 3, location: Location(1, 0), value: 0);
+      final box4 = Box(index: 4, location: Location(2, 0), value: 0);
+
+      final row = [box0, box1, box3, box4];
+      gameDataService.allRows = [row];
+
+      final result = gameLogicService.removeContiguousBoxes();
+
+      expect(result, false);
+      expect(gameDataService.removed, []);
+    });
   });
 }
 
