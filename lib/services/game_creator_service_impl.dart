@@ -25,7 +25,7 @@ class GameCreatorServiceImpl extends GameCreatorService {
     }
   }
 
-  // void _createTestGame() {
+  // void _createGame() {
   //   gameDataService.createEmptyGame();
   //   gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
   //   gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));

@@ -51,8 +51,8 @@ class GameCubit extends Cubit<GameState> {
     if (anyRemoved) {
       emit(GameState(game: gameDataService.game));
 
-      // gameLogicService.plugGaps();
-      // emit(GameState(game: gameDataService.game));
+      gameLogicService.plugGaps();
+      emit(GameState(game: gameDataService.game));
     }
   }
 }

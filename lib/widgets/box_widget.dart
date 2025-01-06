@@ -9,20 +9,29 @@ class BoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dx = box.location.dx;
+    final dy = box.location.dy;
+    final locationText = '($dx, $dy)';
     return Padding(
       padding: EdgeInsets.all(Constants.boxPadding),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
-              Colours.convertToColour(box.value),
-            ],
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
+                  Colours.convertToColour(box.value),
+                ],
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
+            ),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
-        ),
+          Text(locationText),
+        ],
       ),
     );
   }
