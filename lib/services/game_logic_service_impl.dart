@@ -2,32 +2,35 @@ import '../interfaces.dart';
 import '../types.dart';
 
 class GameLogicServiceImpl extends GameLogicService {
-  GameLogicServiceImpl(this.gameDataService);
+  GameLogicServiceImpl(this.gameDataService, this.loggerService);
   final GameDataService gameDataService;
+  final LoggerService loggerService;
 
   @override
   bool removeContiguousBoxes() {
+    loggerService.info('removeContiguousBoxes()');
     Set<Box> boxesToRemove = <Box>{};
     final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
     boxesToRemove.addAll(columnBoxes);
     final rowBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows());
     boxesToRemove.addAll(rowBoxes);
 
-    if (boxesToRemove.isNotEmpty) {
-      gameDataService.removeBoxes(boxesToRemove);
-      return true;
-    }
+    if (boxesToRemove.isEmpty) return false;
 
-    return false;
+    gameDataService.removeBoxes(boxesToRemove);
+    return true;
   }
 
   @override
   bool collapseToCentre() {
+    loggerService.info('collapseToCentre()');
     Set<Box> boxesToUpdate = <Box>{};
-    for (int x = 0; x < 10; x++) {
-      // Use calculated max values.
-      for (int y = 0; x < 10; y++) {
-        boxesToUpdate.addAll(_checkFourLocations(Pos(x, y)));
+    final max = gameDataService.getMaximumDxDyValue();
+    for (int x = 0; x < max; x++) {
+      for (int y = 0; y < max; y++) {
+        if (x > 0 || y > 0) {
+          boxesToUpdate.addAll(_checkTwelveLocations(Pos(x, y)));
+        }
       }
     }
     if (boxesToUpdate.isNotEmpty) {
@@ -40,6 +43,7 @@ class GameLogicServiceImpl extends GameLogicService {
 
   // removeContiguousBoxes
   List<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
+    loggerService.info('_removeContiguousBoxesInColumnsOrRows()');
     final boxesToRemove = <Box>[];
     for (final columnOrRow in allColumnsOrRows) {
       Box? lastBox;
@@ -77,26 +81,29 @@ class GameLogicServiceImpl extends GameLogicService {
   }
 
   // collapseToCentre
-  List<Box> _checkFourLocations(Pos pos) {
+  List<Box> _checkTwelveLocations(Pos pos) {
+    loggerService.info('_checkTwelveLocations(${pos.x}, ${pos.y})');
     List<Box> boxesToUpdate = <Box>[];
+    if (pos.x == 0 && pos.y == 0) return boxesToUpdate; // Cannot improve.
 
-    final ne = _checkOneLocation(Pos(pos.x, pos.y));
+    final ne = _checkThreeLocation(Pos(pos.x, pos.y));
     if (ne != null) boxesToUpdate.add(ne);
 
-    final se = _checkOneLocation(Pos(pos.x, -pos.y));
+    final se = _checkThreeLocation(Pos(pos.x, -pos.y));
     if (se != null) boxesToUpdate.add(se);
 
-    final sw = _checkOneLocation(Pos(-pos.x, pos.y));
+    final sw = _checkThreeLocation(Pos(-pos.x, pos.y));
     if (sw != null) boxesToUpdate.add(sw);
 
-    final nw = _checkOneLocation(Pos(-pos.x, pos.y));
+    final nw = _checkThreeLocation(Pos(-pos.x, pos.y));
     if (nw != null) boxesToUpdate.add(nw);
 
     return boxesToUpdate;
   }
 
-  Box? _checkOneLocation(Pos pos) {
-    if (pos.x == 0 && pos.y == 0) return null; // cannot improve.
+  Box? _checkThreeLocation(Pos pos) {
+    loggerService.info('_checkThreeLocation(${pos.x}, ${pos.y})');
+    if (pos.x == 0 && pos.y == 0) return null; // Cannot improve.
 
     final box = gameDataService.findByLocation(Location.fromInt(pos.x, pos.y));
     if (box == null) return null;
@@ -120,6 +127,7 @@ class GameLogicServiceImpl extends GameLogicService {
   int _increment(int i) {
     if (i > 0) return -1;
     if (i < 0) return 1;
+
     return 0;
   }
 }

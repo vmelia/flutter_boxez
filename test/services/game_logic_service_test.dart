@@ -6,11 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late MockGameDataService gameDataService;
+  late MockLoggerService loggerService;
   late GameLogicService gameLogicService;
 
   setUp(() {
     gameDataService = MockGameDataService();
-    gameLogicService = GameLogicServiceImpl(gameDataService);
+    loggerService = MockLoggerService();
+    gameLogicService = GameLogicServiceImpl(gameDataService, loggerService);
   });
 
   group('removeContiguousBoxes', () {
@@ -113,6 +115,9 @@ class MockGameDataService extends GameDataService {
   Box? findByLocation(Location location) => null;
 
   @override
+  int getMaximumDxDyValue() => 0;
+
+  @override
   Game get game => Game();
 
   @override
@@ -135,4 +140,11 @@ class MockGameDataService extends GameDataService {
 
   @override
   void updateBoxes(Set<Box> updates) {}
+}
+
+class MockLoggerService extends LoggerService {
+  late String loggedMessage;
+
+  @override
+  info(String message) => loggedMessage = message;
 }

@@ -86,8 +86,7 @@ class DragServiceImpl extends DragService {
     }
   }
 
-  _snapToCell(Location localLocation) =>
-    Location.fromInt(localLocation.dx.round(), localLocation.dy.round());
+  _snapToCell(Location localLocation) => Location.fromInt(localLocation.dx.round(), localLocation.dy.round());
 
   _reset() {
     _globalStartLocation = null;

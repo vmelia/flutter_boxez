@@ -22,6 +22,17 @@ class GameDataServiceImpl extends GameDataService {
   }
 
   @override
+  int getMaximumDxDyValue() {
+    var max = 0;
+    for (final box in _game.boxes) {
+      if (box.location.dx.toInt().abs() > max) max = box.location.dx.toInt().abs();
+      if (box.location.dy.toInt().abs() > max) max = box.location.dy.toInt().abs();
+    }
+
+    return max;
+  }
+
+  @override
   void add(Box box) => _game.boxes.add(box);
 
   @override

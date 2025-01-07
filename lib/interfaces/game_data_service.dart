@@ -7,6 +7,8 @@ abstract class GameDataService {
 
   Box? findByLocation(Location location);
 
+  int getMaximumDxDyValue();
+
   void add(Box box);
   void remove(Box box);
   void removeBoxes(Set<Box> updates);
