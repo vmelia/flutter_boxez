@@ -4,12 +4,12 @@ import '../types.dart';
 import '../widgets.dart';
 
 class WidgetHelper {
-  static List<Widget> convertBoxesIntoWidgets(Game game, BuildContext context) {
+  static List<Widget> convertBoxesIntoWidgets(Game game, BuildContext context, bool isDragging) {
     return game.boxes
         .map(
           (box) => Positioned.fromRect(
             rect: getRect(box.location, context),
-            child: BoxWidget(box: box),
+            child: BoxWidget(box: box, isDragging: isDragging),
           ),
         )
         .toList();

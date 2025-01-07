@@ -4,8 +4,9 @@ import 'package:flutter_boxez/types.dart';
 import '../helpers.dart';
 
 class BoxWidget extends StatelessWidget {
-  const BoxWidget({super.key, required this.box});
+  const BoxWidget({super.key, required this.box, required this.isDragging});
   final Box box;
+  final bool isDragging;
 
   @override
   Widget build(BuildContext context) {

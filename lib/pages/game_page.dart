@@ -30,7 +30,7 @@ class _MainPageView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: IconButtonWidget(iconData: Icons.gamepad, onPressed: () => gameCubit.createGame()),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: BoardWidget(game: state.game),
+      body: BoardWidget(game: state.game, isDragging: state.isDragging),
     );
   }
 }

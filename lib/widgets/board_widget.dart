@@ -6,13 +6,14 @@ import '../helpers.dart';
 import '../interfaces.dart';
 
 class BoardWidget extends StatelessWidget {
-  const BoardWidget({super.key, required this.game});
+  const BoardWidget({super.key, required this.game, required this.isDragging});
   final Game game;
+  final bool isDragging;
 
   @override
   Widget build(BuildContext context) {
     final dragService = GetIt.I<DragService>();
-    final widgets = WidgetHelper.convertBoxesIntoWidgets(game, context);
+    final widgets = WidgetHelper.convertBoxesIntoWidgets(game, context, isDragging);
 
     return Scaffold(
       body: GestureDetector(
