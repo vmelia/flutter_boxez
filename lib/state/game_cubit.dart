@@ -50,9 +50,8 @@ class GameCubit extends Cubit<GameState> {
     final anyRemoved = gameLogicService.removeContiguousBoxes();
     if (anyRemoved) {
       emit(GameState(game: gameDataService.game));
-
-      gameLogicService.plugGaps();
-      emit(GameState(game: gameDataService.game));
+      // gameLogicService.collapseToCentre();
+      // emit(GameState(game: gameDataService.game));
     }
   }
 }

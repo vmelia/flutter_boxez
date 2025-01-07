@@ -13,9 +13,9 @@ class GameCreatorServiceImpl extends GameCreatorService {
   void _createGame() {
     gameDataService.createEmptyGame();
     int index = 0;
-    for (var dx = Constants.gridStart; dx <= Constants.gridEnd; dx++) {
-      for (var dy = Constants.gridStart; dy <= Constants.gridEnd; dy++) {
-        final location = Location(dx.toDouble(), dy.toDouble());
+    for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
+      for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
+        final location = Location.fromInt(x, y);
         final proposedValue = randomService.value;
         final value = _getValidValue(location, proposedValue);
 

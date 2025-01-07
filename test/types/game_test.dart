@@ -8,7 +8,7 @@ void main() {
     game = Game();
   });
 
-  Box createBox(int i) => Box(index: i, location: Location(i.toDouble(), i.toDouble()), value: i);
+  Box createBox(int i) => Box(index: i, location: Location.fromInt(i, i), value: i);
 
   group('constructor', () {
     test('boxes list is empty', () {

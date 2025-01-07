@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '../interfaces.dart';
 import '../types.dart';
 
@@ -24,37 +22,23 @@ class GameLogicServiceImpl extends GameLogicService {
   }
 
   @override
-  void plugGaps() {
-    final clonedGame = Game.clone(gameDataService.game); //TODO: Needed?
-    final distSortedBoxes = clonedGame.boxes;
-    distSortedBoxes.sort((a, b) => a.location.distanceSquared.compareTo(b.location.distanceSquared));
-
-    final updatedBoxes = <Box>{};
-    for (final box in distSortedBoxes) {
-      final possibleMoves = <double>[];
-      Location centreOffset = Location.zero() - box.location;
-      for (final cardinal in Constants.cardinals) {
-        final angleDelta = (cardinal - centreOffset.direction).abs();
-        if (angleDelta < pi / 3) {
-          possibleMoves.add(angleDelta);
-        }
-      }
-
-      for (final move in possibleMoves) {
-        final newLocation = box.location + Location.fromDirection(move);
-        if (gameDataService.findByLocation(newLocation) == null) {
-          final updatedBox = box.copyWith(location: newLocation);
-          updatedBoxes.add(updatedBox);
-          break;
-        }
+  bool collapseToCentre() {
+    Set<Box> boxesToUpdate = <Box>{};
+    for (int x = 0; x < 10; x++) {
+      // Use calculated max values.
+      for (int y = 0; x < 10; y++) {
+        boxesToUpdate.addAll(_checkFourLocations(Pos(x, y)));
       }
     }
-
-    if (updatedBoxes.isNotEmpty) {
-      boxesMoving!(updatedBoxes);
+    if (boxesToUpdate.isNotEmpty) {
+      gameDataService.updateBoxes(boxesToUpdate);
+      return true;
     }
+
+    return false;
   }
 
+  // removeContiguousBoxes
   List<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
     final boxesToRemove = <Box>[];
     for (final columnOrRow in allColumnsOrRows) {
@@ -90,5 +74,52 @@ class GameLogicServiceImpl extends GameLogicService {
     if ((lastBox.location.dy - b.location.dy).abs() > 1) return false;
 
     return true;
+  }
+
+  // collapseToCentre
+  List<Box> _checkFourLocations(Pos pos) {
+    List<Box> boxesToUpdate = <Box>[];
+
+    final ne = _checkOneLocation(Pos(pos.x, pos.y));
+    if (ne != null) boxesToUpdate.add(ne);
+
+    final se = _checkOneLocation(Pos(pos.x, -pos.y));
+    if (se != null) boxesToUpdate.add(se);
+
+    final sw = _checkOneLocation(Pos(-pos.x, pos.y));
+    if (sw != null) boxesToUpdate.add(sw);
+
+    final nw = _checkOneLocation(Pos(-pos.x, pos.y));
+    if (nw != null) boxesToUpdate.add(nw);
+
+    return boxesToUpdate;
+  }
+
+  Box? _checkOneLocation(Pos pos) {
+    if (pos.x == 0 && pos.y == 0) return null; // cannot improve.
+
+    final box = gameDataService.findByLocation(Location.fromInt(pos.x, pos.y));
+    if (box == null) return null;
+
+    Set<Pos> targetLocations = <Pos>{};
+    targetLocations.add(Pos(pos.x + _increment(pos.x), pos.y + _increment(pos.y)));
+    targetLocations.add(Pos(pos.x + _increment(pos.x), pos.y));
+    targetLocations.add(Pos(pos.x, pos.y + _increment(pos.y)));
+
+    for (final target in targetLocations) {
+      final existingBox = gameDataService.findByLocation(Location.fromInt(target.x, target.y));
+      if (existingBox != null) continue; // cannot move here - it's already full.
+
+      final newBox = box.copyWith(location: Location.fromInt(target.x, target.y));
+      return newBox;
+    }
+
+    return null;
+  }
+
+  int _increment(int i) {
+    if (i > 0) return -1;
+    if (i < 0) return 1;
+    return 0;
   }
 }

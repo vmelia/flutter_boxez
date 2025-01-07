@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 class Location extends Equatable {
   const Location(this.dx, this.dy);
   const Location.zero(): dx = 0.0, dy = 0.0;
+  Location.fromInt(int x, int y): dx = x.toDouble(), dy = y.toDouble();
   Location.fromDirection(double direction, [ double distance = 1.0 ]) : 
     dx = distance * cos(direction), dy = distance * sin(direction);
 

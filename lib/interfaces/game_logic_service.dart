@@ -2,7 +2,7 @@ import '../types.dart';
 
 abstract class GameLogicService {
   bool removeContiguousBoxes();
-  void plugGaps();
+  bool collapseToCentre();
 
   BoxesUpdated? boxesMoving;
 }
