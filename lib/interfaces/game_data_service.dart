@@ -15,12 +15,12 @@ abstract class GameDataService {
 
   // Update boxes functionality.
   // Note: Because Box is immutable, we have to remove old versions and add new ones (based on index).
-  void updateBoxes(Set<Box> updates);
+  //void updateBoxes(Set<Box> updates);
 
   // Returns a map of boxes that are in the same column/row as the index.
   // The mapped key is the original location of the box - so we can reset if required.
-  Map<Location, Box> getSelectedColumn(int index);
-  Map<Location, Box> getSelectedRow(int index);
+  List<Box> getSelectedColumn(int index);
+  List<Box> getSelectedRow(int index);
 
   // Returns a list of all columns/row.
   Iterable<List<Box>> getAllColumns();

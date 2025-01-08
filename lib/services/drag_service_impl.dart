@@ -9,8 +9,8 @@ class DragServiceImpl extends DragService {
 
   late double _boxWidth;
   late Offset? _globalStartLocation;
-  late Map<Location, Box> _draggedRow;
-  late Map<Location, Box> _draggedColumn;
+  late List<Box> _draggedRow;
+  late List<Box> _draggedColumn;
 
   @override
   void onPanStart(Offset globalLocation, Location location, double boxWidth) {
@@ -37,11 +37,11 @@ class DragServiceImpl extends DragService {
     final localDelta = _calculatelocalDelta(globalLocation, false);
 
     if (draggingingHorizontally) {
-      _updateBoxes(_draggedColumn, Location.zero(), false);
-      _updateBoxes(_draggedRow, localDelta, false);
+      _moveTemp(_draggedColumn, Location.zero());
+      _moveTemp(_draggedRow, localDelta);
     } else {
-      _updateBoxes(_draggedRow, Location.zero(), false);
-      _updateBoxes(_draggedColumn, localDelta, false);
+      _moveTemp(_draggedRow, Location.zero());
+      _moveTemp(_draggedColumn, localDelta);
     }
   }
 
@@ -50,9 +50,9 @@ class DragServiceImpl extends DragService {
     final localDelta = _calculatelocalDelta(globalLocation, true);
 
     if (draggingingHorizontally) {
-      _updateBoxes(_draggedRow, localDelta, true);
+      _moveFinal(_draggedRow, localDelta);
     } else {
-      _updateBoxes(_draggedColumn, localDelta, true);
+      _moveFinal(_draggedColumn, localDelta);
     }
   }
 
@@ -72,25 +72,27 @@ class DragServiceImpl extends DragService {
     return snapToCell ? _snapToCell(localDeltaSnappedToColumnAndRow) : localDeltaSnappedToColumnAndRow;
   }
 
-  void _updateBoxes(Map<Location, Box> boxes, Location delta, bool done) {
-    final updatedBoxes = <Box>{};
-    for (final entry in boxes.entries) {
-      final updatedBox = entry.value.copyWith(location: entry.key + delta);
-      updatedBoxes.add(updatedBox);
+  void _moveTemp(List<Box> boxes, Location delta) {
+    for (final box in boxes) {
+      box.moveTemp(delta);
     }
 
-    if (done) {
-      boxesFinished!(updatedBoxes);
-    } else {
-      boxesMoving!(updatedBoxes);
+    refresh!(false);
+  }
+
+  void _moveFinal(List<Box> boxes, Location delta) {
+    for (final box in boxes) {
+      box.moveByDelta(delta);
     }
+
+    refresh!(true);
   }
 
   _snapToCell(Location localLocation) => Location.fromInt(localLocation.dx.round(), localLocation.dy.round());
 
   _reset() {
     _globalStartLocation = null;
-    _draggedRow = {};
-    _draggedColumn = {};
+    _draggedRow = [];
+    _draggedColumn = [];
   }
 }

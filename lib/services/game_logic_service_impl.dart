@@ -8,7 +8,7 @@ class GameLogicServiceImpl extends GameLogicService {
 
   @override
   bool removeContiguousBoxes() {
-    loggerService.info('removeContiguousBoxes()');
+    //loggerService.info('removeContiguousBoxes()');
     Set<Box> boxesToRemove = <Box>{};
     final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
     boxesToRemove.addAll(columnBoxes);
@@ -23,28 +23,26 @@ class GameLogicServiceImpl extends GameLogicService {
 
   @override
   bool collapseToCentre() {
-    loggerService.info('collapseToCentre()');
-    Set<Box> boxesToUpdate = <Box>{};
+    //loggerService.info('collapseToCentre()');
     final max = gameDataService.getMaximumDxDyValue();
-    for (int x = 0; x < max; x++) {
-      for (int y = 0; y < max; y++) {
+    loggerService.info('collapseToCentre() - 0..$max');
+    bool anyChanges = false;
+    for (int x = 0; x <= max; x++) {
+      for (int y = 0; y <= max; y++) {
         if (x > 0 || y > 0) {
-          boxesToUpdate.addAll(_checkTwelveLocations(Pos(x, y)));
+          final changed = _checkTwelveLocations(Pos(x, y));
+          anyChanges = anyChanges || changed;
         }
       }
     }
-    if (boxesToUpdate.isNotEmpty) {
-      gameDataService.updateBoxes(boxesToUpdate);
-      return true;
-    }
 
-    return false;
+    return anyChanges;
   }
 
   // removeContiguousBoxes
-  List<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
-    loggerService.info('_removeContiguousBoxesInColumnsOrRows()');
-    final boxesToRemove = <Box>[];
+  Set<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
+    //loggerService.info('_removeContiguousBoxesInColumnsOrRows()');
+    final boxesToRemove = <Box>{};
     for (final columnOrRow in allColumnsOrRows) {
       Box? lastBox;
       List<Box> run = <Box>[];
@@ -81,53 +79,58 @@ class GameLogicServiceImpl extends GameLogicService {
   }
 
   // collapseToCentre
-  List<Box> _checkTwelveLocations(Pos pos) {
-    loggerService.info('_checkTwelveLocations(${pos.x}, ${pos.y})');
-    List<Box> boxesToUpdate = <Box>[];
-    if (pos.x == 0 && pos.y == 0) return boxesToUpdate; // Cannot improve.
+  bool _checkTwelveLocations(Pos pos) {
+    if (pos.x == 0 && pos.y == 0) return false; // Cannot improve.
+    //loggerService.info('_checkTwelveLocations(${pos.x}, ${pos.y})');
 
     final ne = _checkThreeLocation(Pos(pos.x, pos.y));
-    if (ne != null) boxesToUpdate.add(ne);
-
     final se = _checkThreeLocation(Pos(pos.x, -pos.y));
-    if (se != null) boxesToUpdate.add(se);
-
-    final sw = _checkThreeLocation(Pos(-pos.x, pos.y));
-    if (sw != null) boxesToUpdate.add(sw);
-
+    final sw = _checkThreeLocation(Pos(-pos.x, -pos.y));
     final nw = _checkThreeLocation(Pos(-pos.x, pos.y));
-    if (nw != null) boxesToUpdate.add(nw);
 
-    return boxesToUpdate;
+    return ne || se || sw || nw;
   }
 
-  Box? _checkThreeLocation(Pos pos) {
-    loggerService.info('_checkThreeLocation(${pos.x}, ${pos.y})');
-    if (pos.x == 0 && pos.y == 0) return null; // Cannot improve.
+  bool _checkThreeLocation(Pos pos) {
+    //loggerService.info('_checkThreeLocation(${pos.x}, ${pos.y})');
+    if (pos.x == 0 && pos.y == 0) return false; // Cannot improve.
 
     final box = gameDataService.findByLocation(Location.fromInt(pos.x, pos.y));
-    if (box == null) return null;
+    if (box == null) return false;
 
+    loggerService.info('Box(${box.location.dx}, ${box.location.dy} = ${box.index}');
     Set<Pos> targetLocations = <Pos>{};
-    targetLocations.add(Pos(pos.x + _increment(pos.x), pos.y + _increment(pos.y)));
-    targetLocations.add(Pos(pos.x + _increment(pos.x), pos.y));
-    targetLocations.add(Pos(pos.x, pos.y + _increment(pos.y)));
-
-    for (final target in targetLocations) {
-      final existingBox = gameDataService.findByLocation(Location.fromInt(target.x, target.y));
-      if (existingBox != null) continue; // cannot move here - it's already full.
-
-      final newBox = box.copyWith(location: Location.fromInt(target.x, target.y));
-      return newBox;
+    if (pos.x != 0 && pos.y != 0) {
+      targetLocations.add(Pos(_decrement(pos.x), _decrement(pos.y)));
+    }
+    if (pos.x != 0) {
+      targetLocations.add(Pos(_decrement(pos.x), pos.y));
+    }
+    if (pos.y != 0) {
+      targetLocations.add(Pos(pos.x, _decrement(pos.y)));
     }
 
-    return null;
+    for (final target in targetLocations) {
+      final targetLocation = Location.fromInt(target.x, target.y);
+      loggerService.info('  Checking (${targetLocation.dx}, ${targetLocation.dy})');
+      final existingBox = gameDataService.findByLocation(targetLocation);
+
+      if (existingBox != null) {
+        loggerService.info('  Already occupied: (${targetLocation.dx}, ${targetLocation.dy})');
+        continue; // Cannot move here - it's already occupied.
+      }
+
+      box.moveAbsolute(targetLocation);
+      return true;
+    }
+
+    return false;
   }
 
-  int _increment(int i) {
-    if (i > 0) return -1;
-    if (i < 0) return 1;
+  int _decrement(int i) {
+    if (i > 0) return i - 1;
+    if (i < 0) return i + 1;
 
-    return 0;
+    return i;
   }
 }

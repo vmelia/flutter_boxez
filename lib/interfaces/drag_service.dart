@@ -7,6 +7,5 @@ abstract class DragService {
   void onPanUpdate(Offset globalLocation);
   void onPanEnd(Offset globalLocation);
 
-  BoxesUpdated? boxesMoving;
-  BoxesUpdated? boxesFinished;
+  Refresh? refresh;
 }

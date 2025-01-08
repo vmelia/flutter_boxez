@@ -7,7 +7,9 @@ import '../types.dart';
 
 class GameState extends Equatable {
   const GameState({required this.game, required this.isDragging});
-  GameState.initial() : game = Game(), isDragging = false;
+  GameState.initial()
+      : game = Game(),
+        isDragging = false;
   final Game game;
   final bool isDragging;
 
@@ -22,9 +24,8 @@ class GameCubit extends Cubit<GameState> {
     this.dragService,
     this.gameLogicService,
   ) : super(GameState.initial()) {
-    dragService.boxesMoving = boxesMoving;
-    dragService.boxesFinished = boxesFinished;
-    gameLogicService.boxesFinished = boxesFinished;
+    dragService.refresh = refresh;
+    gameLogicService.refresh = refresh;
   }
 
   final GameCreatorService gameCreatorService;
@@ -37,26 +38,20 @@ class GameCubit extends Cubit<GameState> {
     emit(GameState(game: gameDataService.game, isDragging: false));
   }
 
-  void boxesMoving(Set<Box> updates) {
+  void refresh(bool done) {
     emit(GameState.initial());
-    gameDataService.updateBoxes(updates);
-    emit(GameState(game: gameDataService.game, isDragging: true));
-  }
+    emit(GameState(game: gameDataService.game, isDragging: !done));
 
-  void boxesFinished(Set<Box> updates) {
-    emit(GameState.initial());
-    gameDataService.updateBoxes(updates);
-    emit(GameState(game: gameDataService.game, isDragging: false));
+    if (done) {
+      final anyRemoved = gameLogicService.removeContiguousBoxes();
+      if (anyRemoved) {
+        var anyChanges = gameLogicService.collapseToCentre();
+        while (anyChanges) {
+          anyChanges = gameLogicService.collapseToCentre();
+        }
 
-    final anyRemoved = gameLogicService.removeContiguousBoxes();
-    if (anyRemoved) {
-      emit(GameState(game: gameDataService.game, isDragging: false));
-
-      var anyChanges = gameLogicService.collapseToCentre();
-      while (anyChanges) {
-        anyChanges = gameLogicService.collapseToCentre();
+        emit(GameState(game: gameDataService.game, isDragging: false));
       }
-      emit(GameState(game: gameDataService.game, isDragging: false));
     }
   }
 }

@@ -12,9 +12,10 @@ class BoxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final dx = box.location.dx;
     final dy = box.location.dy;
-    final locationText = '($dx, $dy)';
     return AnimatedPositioned.fromRect(
-      duration: isDragging ? Duration(milliseconds: 0) : Duration(milliseconds: 1000),
+      key: Key(box.index.toString()),
+      duration: isDragging ? Duration.zero : Duration(milliseconds: 1000),
+      curve: Curves.easeInOut,
       rect: WidgetHelper.getRect(box.location, context),
       child: Padding(
         padding: EdgeInsets.all(Constants.boxPadding),
@@ -34,7 +35,7 @@ class BoxWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
               ),
             ),
-            Text(locationText),
+            Text('($dx, $dy)\n${box.index}'),
           ],
         ),
       ),

@@ -17,11 +17,11 @@ void main() {
 
   group('removeContiguousBoxes', () {
     test('removes three in a column correctly', () {
-      final box0 = Box(index: 0, location: Location(0, -2), value: 0);
-      final box1 = Box(index: 1, location: Location(0, -1), value: 1);
-      final box2 = Box(index: 2, location: Location(0, 0), value: 1);
-      final box3 = Box(index: 3, location: Location(0, 1), value: 1);
-      final box4 = Box(index: 4, location: Location(0, 2), value: 0);
+      final box0 = Box(0, Location(0, -2), 0);
+      final box1 = Box(1, Location(0, -1), 1);
+      final box2 = Box(2, Location(0, 0), 1);
+      final box3 = Box(3, Location(0, 1), 1);
+      final box4 = Box(4, Location(0, 2), 0);
 
       final column = [box0, box1, box2, box3, box4];
       gameDataService.allColumns = [column];
@@ -32,11 +32,11 @@ void main() {
       expect(gameDataService.removed, [box1, box2, box3]);
     });
     test('removes three in a row correctly', () {
-      final box0 = Box(index: 0, location: Location(-2, 0), value: 0);
-      final box1 = Box(index: 1, location: Location(-1, 0), value: 1);
-      final box2 = Box(index: 2, location: Location(0, 0), value: 1);
-      final box3 = Box(index: 3, location: Location(1, 0), value: 1);
-      final box4 = Box(index: 4, location: Location(2, 0), value: 0);
+      final box0 = Box(0, Location(-2, 0), 0);
+      final box1 = Box(1, Location(-1, 0), 1);
+      final box2 = Box(2, Location(0, 0), 1);
+      final box3 = Box(3, Location(1, 0), 1);
+      final box4 = Box(4, Location(2, 0), 0);
 
       final row = [box0, box1, box2, box3, box4];
       gameDataService.allRows = [row];
@@ -47,15 +47,15 @@ void main() {
       expect(gameDataService.removed, [box1, box2, box3]);
     });
     test('removes three in a column and row correctly', () {
-      final box0 = Box(index: 0, location: Location(0, -2), value: 0);
-      final box1 = Box(index: 1, location: Location(0, -1), value: 1);
-      final box2 = Box(index: 2, location: Location(0, 0), value: 1);
-      final box3 = Box(index: 3, location: Location(0, 1), value: 1);
-      final box4 = Box(index: 4, location: Location(0, 2), value: 0);
-      final box5 = Box(index: 5, location: Location(-2, 0), value: 0);
-      final box6 = Box(index: 6, location: Location(-1, 0), value: 1);
-      final box7 = Box(index: 7, location: Location(1, 0), value: 1);
-      final box8 = Box(index: 8, location: Location(2, 0), value: 0);
+      final box0 = Box(0, Location(0, -2), 0);
+      final box1 = Box(1, Location(0, -1), 1);
+      final box2 = Box(2, Location(0, 0), 1);
+      final box3 = Box(3, Location(0, 1), 1);
+      final box4 = Box(4, Location(0, 2), 0);
+      final box5 = Box(5, Location(-2, 0), 0);
+      final box6 = Box(6, Location(-1, 0), 1);
+      final box7 = Box(7, Location(1, 0), 1);
+      final box8 = Box(8, Location(2, 0), 0);
 
       final column = [box0, box1, box2, box3, box4];
       gameDataService.allColumns = [column];
@@ -68,11 +68,11 @@ void main() {
       expect(gameDataService.removed, [box1, box2, box3, box6, box7]);
     });
     test('ignores column sequence with gaps', () {
-      final box0 = Box(index: 0, location: Location(0, -2), value: 0);
-      final box1 = Box(index: 1, location: Location(0, -1), value: 0);
+      final box0 = Box(0, Location(0, -2), 0);
+      final box1 = Box(1, Location(0, -1), 0);
       // No value at (0, 0).
-      final box3 = Box(index: 3, location: Location(0, 1), value: 0);
-      final box4 = Box(index: 4, location: Location(0, 2), value: 0);
+      final box3 = Box(3, Location(0, 1), 0);
+      final box4 = Box(4, Location(0, 2), 0);
 
       final column = [box0, box1, box3, box4];
       gameDataService.allColumns = [column];
@@ -83,11 +83,11 @@ void main() {
       expect(gameDataService.removed, []);
     });
     test('ignores row sequence with gaps', () {
-      final box0 = Box(index: 0, location: Location(-2, 0), value: 0);
-      final box1 = Box(index: 1, location: Location(-1, 0), value: 0);
+      final box0 = Box(0, Location(-2, 0), 0);
+      final box1 = Box(1, Location(-1, 0), 0);
       // No value at (0, 0).
-      final box3 = Box(index: 3, location: Location(1, 0), value: 0);
-      final box4 = Box(index: 4, location: Location(2, 0), value: 0);
+      final box3 = Box(3, Location(1, 0), 0);
+      final box4 = Box(4, Location(2, 0), 0);
 
       final row = [box0, box1, box3, box4];
       gameDataService.allRows = [row];
@@ -127,19 +127,16 @@ class MockGameDataService extends GameDataService {
   Iterable<List<Box>> getAllRows() => allRows;
 
   @override
-  Map<Location, Box> getSelectedColumn(int index) => {};
+  List<Box> getSelectedColumn(int index) => [];
 
   @override
-  Map<Location, Box> getSelectedRow(int index) => {};
+  List<Box> getSelectedRow(int index) => [];
 
   @override
   void remove(Box box) {}
 
   @override
   void removeBoxes(Set<Box> updates) => removed = updates;
-
-  @override
-  void updateBoxes(Set<Box> updates) {}
 }
 
 class MockLoggerService extends LoggerService {

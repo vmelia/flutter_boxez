@@ -19,17 +19,17 @@ void main() {
   // -------------
   // | 0 | 2 | 0 |
   // -------------
-  final box0 = Box(index: 0, location: Location(-1, -1), value: 0);
-  final box1 = Box(index: 1, location: Location(0, -1), value: 2);
-  final box2 = Box(index: 2, location: Location(1, -1), value: 0);
+  final box0 = Box(0, Location(-1, -1), 0);
+  final box1 = Box(1, Location(0, -1), 2);
+  final box2 = Box(2, Location(1, -1), 0);
 
-  final box3 = Box(index: 3, location: Location(-1, 0), value: 2);
-  final box4 = Box(index: 4, location: Location(0, 0), value: 4);
-  final box5 = Box(index: 5, location: Location(1, 0), value: 2);
+  final box3 = Box(3, Location(-1, 0), 2);
+  final box4 = Box(4, Location(0, 0), 4);
+  final box5 = Box(5, Location(1, 0), 2);
 
-  final box6 = Box(index: 6, location: Location(-1, 1), value: 0);
-  final box7 = Box(index: 7, location: Location(0, 1), value: 2);
-  final box8 = Box(index: 9, location: Location(1, 1), value: 0);
+  final box6 = Box(6, Location(-1, 1), 0);
+  final box7 = Box(7, Location(0, 1), 2);
+  final box8 = Box(9, Location(1, 1), 0);
 
   void createTestGame() {
     gameDataService.add(box0);
@@ -107,22 +107,6 @@ void main() {
     });
   });
 
-  group('updateBoxes', () {
-    test('updates boxes correctly', () {
-      addThreeBoxes();
-
-      final newBox0 = Box(index: 0, location: Location(10, 10), value: 0);
-      final newBox2 = Box(index: 2, location: Location(12, 12), value: 2);
-
-      gameDataService.updateBoxes({newBox0, newBox2});
-
-      expect(gameDataService.game.boxes.length, 3);
-      expect(gameDataService.game.boxes.toList()[0], box1); // Unchanged.
-      expect(gameDataService.game.boxes.toList()[1], newBox0);
-      expect(gameDataService.game.boxes.toList()[2], newBox2);
-    });
-  });
-
   group('getSelectedColumn', () {
     test('returns correct list', () {
       createTestGame();
@@ -130,9 +114,9 @@ void main() {
       final result = gameDataService.getSelectedColumn(0); // Center
 
       expect(result.length, 3);
-      expect(result[Location(0, -1)], box1);
-      expect(result[Location(0, 0)], box4);
-      expect(result[Location(0, 1)], box7);
+      expect(result[0], box1);
+      expect(result[1], box4);
+      expect(result[2], box7);
     });
   });
   group('getSelectedRow', () {
@@ -142,9 +126,9 @@ void main() {
       final result = gameDataService.getSelectedRow(0); // Center
 
       expect(result.length, 3);
-      expect(result[Location(-1, 0)], box3);
-      expect(result[Location(0, 0)], box4);
-      expect(result[Location(1, 0)], box5);
+      expect(result[0], box3);
+      expect(result[1], box4);
+      expect(result[2], box5);
     });
   });
 

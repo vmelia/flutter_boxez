@@ -19,7 +19,7 @@ class GameCreatorServiceImpl extends GameCreatorService {
   //       final proposedValue = randomService.value;
   //       final value = _getValidValue(location, proposedValue);
 
-  //       gameDataService.add(Box(index: index, location: location, value: value));
+  //       gameDataService.add(Box(index, location, value));
   //       index++;
   //     }
   //   }
@@ -27,15 +27,15 @@ class GameCreatorServiceImpl extends GameCreatorService {
 
   void _createGame() {
     gameDataService.createEmptyGame();
-    gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
-    gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
-    gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
-    gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
-    gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
-    gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
-    gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
-    gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
-    gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
+    gameDataService.add(Box(0, Location(-1, -1), 0));
+    gameDataService.add(Box(1, Location(-1, 0), 2));
+    gameDataService.add(Box(2, Location(-1, 1), 0));
+    gameDataService.add(Box(3, Location(0, -1), 2));
+    gameDataService.add(Box(4, Location(0, 0), 4));
+    gameDataService.add(Box(5, Location(0, 1), 2));
+    gameDataService.add(Box(6, Location(1, -1), 0));
+    gameDataService.add(Box(7, Location(1, 0), 2));
+    gameDataService.add(Box(8, Location(1, 1), 0));
   }
 
   int _getValidValue(Location location, int proposedValue) {

@@ -42,30 +42,27 @@ class GameDataServiceImpl extends GameDataService {
   void removeBoxes(Set<Box> updates) => _game.boxes.removeWhere((box) => updates.contains(box));
 
   @override
-  void updateBoxes(Set<Box> updates) => updates.forEach(_updateBox);
-
-  @override
-  Map<Location, Box> getSelectedColumn(int index) {
-    final map = <Location, Box>{};
+  List<Box> getSelectedColumn(int index) {
+    final list = <Box>[];
     for (final b in game.boxes) {
       if (b.location.dx == index) {
-        map[b.location] = b;
+        list.add(b);
       }
     }
 
-    return map;
+    return list;
   }
 
   @override
-  Map<Location, Box> getSelectedRow(int index) {
-    final map = <Location, Box>{};
+  List<Box> getSelectedRow(int index) {
+    final list = <Box>[];
     for (final b in game.boxes) {
       if (b.location.dy == index) {
-        map[b.location] = b;
+        list.add(b);
       }
     }
 
-    return map;
+    return list;
   }
 
   @override
@@ -90,11 +87,5 @@ class GameDataServiceImpl extends GameDataService {
     }
 
     return map.values;
-  }
-
-  void _updateBox(Box update) {
-    final foundBox = game.boxes.firstWhere((x) => x.index == update.index);
-    remove(foundBox);
-    add(update);
   }
 }
