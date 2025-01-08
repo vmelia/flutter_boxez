@@ -5,14 +5,7 @@ import '../widgets.dart';
 
 class WidgetHelper {
   static List<Widget> convertBoxesIntoWidgets(Game game, BuildContext context, bool isDragging) {
-    return game.boxes
-        .map(
-          (box) => Positioned.fromRect(
-            rect: getRect(box.location, context),
-            child: BoxWidget(box: box, isDragging: isDragging),
-          ),
-        )
-        .toList();
+    return game.boxes.map((box) => BoxWidget(box: box, isDragging: isDragging)).toList();
   }
 
   static Box? getTappedBox(Offset globalPosition, Game game, BuildContext context) {

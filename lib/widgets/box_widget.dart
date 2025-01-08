@@ -13,26 +13,30 @@ class BoxWidget extends StatelessWidget {
     final dx = box.location.dx;
     final dy = box.location.dy;
     final locationText = '($dx, $dy)';
-    return Padding(
-      padding: EdgeInsets.all(Constants.boxPadding),
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
-                  Colours.convertToColour(box.value),
-                ],
+    return AnimatedPositioned.fromRect(
+      duration: isDragging ? Duration(milliseconds: 0) : Duration(milliseconds: 1000),
+      rect: WidgetHelper.getRect(box.location, context),
+      child: Padding(
+        padding: EdgeInsets.all(Constants.boxPadding),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
+                    Colours.convertToColour(box.value),
+                  ],
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
             ),
-          ),
-          Text(locationText),
-        ],
+            Text(locationText),
+          ],
+        ),
       ),
     );
   }

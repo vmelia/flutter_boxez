@@ -24,7 +24,7 @@ class GameCubit extends Cubit<GameState> {
   ) : super(GameState.initial()) {
     dragService.boxesMoving = boxesMoving;
     dragService.boxesFinished = boxesFinished;
-    gameLogicService.boxesMoving = boxesMoving;
+    gameLogicService.boxesFinished = boxesFinished;
   }
 
   final GameCreatorService gameCreatorService;

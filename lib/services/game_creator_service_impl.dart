@@ -10,33 +10,33 @@ class GameCreatorServiceImpl extends GameCreatorService {
   @override
   void createGame() => _createGame();
 
-  void _createGame() {
-    gameDataService.createEmptyGame();
-    int index = 0;
-    for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
-      for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
-        final location = Location.fromInt(x, y);
-        final proposedValue = randomService.value;
-        final value = _getValidValue(location, proposedValue);
-
-        gameDataService.add(Box(index: index, location: location, value: value));
-        index++;
-      }
-    }
-  }
-
   // void _createGame() {
   //   gameDataService.createEmptyGame();
-  //   gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
-  //   gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
-  //   gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
-  //   gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
-  //   gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
-  //   gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
-  //   gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
-  //   gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
-  //   gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
+  //   int index = 0;
+  //   for (var x = Constants.gridStart; x <= Constants.gridEnd; x++) {
+  //     for (var y = Constants.gridStart; y <= Constants.gridEnd; y++) {
+  //       final location = Location.fromInt(x, y);
+  //       final proposedValue = randomService.value;
+  //       final value = _getValidValue(location, proposedValue);
+
+  //       gameDataService.add(Box(index: index, location: location, value: value));
+  //       index++;
+  //     }
+  //   }
   // }
+
+  void _createGame() {
+    gameDataService.createEmptyGame();
+    gameDataService.add(Box(index: 0, location: Location(-1, -1), value: 0));
+    gameDataService.add(Box(index: 1, location: Location(-1, 0), value: 2));
+    gameDataService.add(Box(index: 2, location: Location(-1, 1), value: 0));
+    gameDataService.add(Box(index: 3, location: Location(0, -1), value: 2));
+    gameDataService.add(Box(index: 4, location: Location(0, 0), value: 4));
+    gameDataService.add(Box(index: 5, location: Location(0, 1), value: 2));
+    gameDataService.add(Box(index: 6, location: Location(1, -1), value: 0));
+    gameDataService.add(Box(index: 7, location: Location(1, 0), value: 2));
+    gameDataService.add(Box(index: 8, location: Location(1, 1), value: 0));
+  }
 
   int _getValidValue(Location location, int proposedValue) {
     for (var i = 0; i < Colours.count; i++) {
