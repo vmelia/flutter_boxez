@@ -51,8 +51,7 @@ class GameCubit extends Cubit<GameState> {
     do {
       boxesRemoved = gameLogicService.removeContiguousBoxes();
       if (boxesRemoved.isNotEmpty) {
-        //TODO: Explode boxes?
-        _emitDoneGameState();
+        _emitExplodingGameState(boxesRemoved.toList());
         anyChanges = gameLogicService.collapseToCentre();
         if (anyChanges) {
           _emitDoneGameState();
@@ -67,6 +66,11 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void _emitDoneGameState() {
+    emit(GameState.initial());
+    emit(GameState(game: gameDataService.game, isDragging: false));
+  }
+
+  void _emitExplodingGameState(List<Box> removedBoxes) {
     emit(GameState.initial());
     emit(GameState(game: gameDataService.game, isDragging: false));
   }

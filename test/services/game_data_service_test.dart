@@ -100,7 +100,7 @@ void main() {
     test('removes boxes correctly', () {
       addThreeBoxes();
 
-      gameDataService.removeBoxes({box0, box2});
+      gameDataService.markBoxesForRemoval({box0, box2});
 
       expect(gameDataService.game.boxes.length, 1);
       expect(gameDataService.game.boxes.toList()[0], box1); // Unchanged.

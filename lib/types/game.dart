@@ -6,6 +6,7 @@ class Game extends Equatable {
   Game();
 
   final List<Box> _boxes = <Box>[];
+  
   List<Box> get boxes => _boxes;
 
   @override

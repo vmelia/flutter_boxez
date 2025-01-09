@@ -15,7 +15,7 @@ class GameLogicServiceImpl extends GameLogicService {
     boxesToRemove.addAll(rowBoxes);
 
     if (boxesToRemove.isNotEmpty) {
-      gameDataService.removeBoxes(boxesToRemove);
+      gameDataService.markBoxesForRemoval(boxesToRemove);
     }
 
     return boxesToRemove;
