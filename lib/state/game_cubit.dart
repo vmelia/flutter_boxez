@@ -24,6 +24,7 @@ class GameCubit extends Cubit<GameState> {
     this.dragService,
     this.gameLogicService,
   ) : super(GameState.initial()) {
+    dragService.moveInProgress = _moveInProgress;
     dragService.moveMade = _moveMade;
     gameLogicService.moveMade = _moveMade;
   }
@@ -38,27 +39,35 @@ class GameCubit extends Cubit<GameState> {
     emit(GameState(game: gameDataService.game, isDragging: false));
   }
 
-  void _moveMade(bool done) {
-    _emitGameState(!done);
-
-    if (done) {
-      var anyRemoved = false;
-      var anyChanges = false;
-      do {
-        anyRemoved = gameLogicService.removeContiguousBoxes();
-        if (anyRemoved) {
-          _emitGameState(false);
-          anyChanges = gameLogicService.collapseToCentre();
-          if (anyChanges) {
-            _emitGameState(false);
-          }
-        }
-      } while (anyRemoved && anyChanges);
-    }
+  void _moveInProgress() {
+    _emitDraggingGameState();
   }
 
-  void _emitGameState(bool isDragging) {
+  void _moveMade() {
+    _emitDoneGameState();
+
+    Set<Box> boxesRemoved;
+    var anyChanges = false;
+    do {
+      boxesRemoved = gameLogicService.removeContiguousBoxes();
+      if (boxesRemoved.isNotEmpty) {
+        //TODO: Explode boxes?
+        _emitDoneGameState();
+        anyChanges = gameLogicService.collapseToCentre();
+        if (anyChanges) {
+          _emitDoneGameState();
+        }
+      }
+    } while (boxesRemoved.isNotEmpty && anyChanges);
+  }
+
+  void _emitDraggingGameState() {
     emit(GameState.initial());
-    emit(GameState(game: gameDataService.game, isDragging: isDragging));
+    emit(GameState(game: gameDataService.game, isDragging: true));
+  }
+
+  void _emitDoneGameState() {
+    emit(GameState.initial());
+    emit(GameState(game: gameDataService.game, isDragging: false));
   }
 }

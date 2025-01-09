@@ -1,7 +1,7 @@
 import '../types.dart';
 
 abstract class GameLogicService {
-  bool removeContiguousBoxes();
+  Set<Box> removeContiguousBoxes();
   bool collapseToCentre();
 
   MoveMade? moveMade;

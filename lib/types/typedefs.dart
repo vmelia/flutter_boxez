@@ -1,2 +1,2 @@
-typedef MoveInProgress = void Function(bool done);
-typedef MoveMade = void Function(bool done);
+typedef MoveInProgress = void Function();
+typedef MoveMade = void Function();

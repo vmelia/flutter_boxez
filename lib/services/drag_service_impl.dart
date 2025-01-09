@@ -37,11 +37,11 @@ class DragServiceImpl extends DragService {
     final localDelta = _calculatelocalDelta(globalLocation, false);
 
     if (draggingingHorizontally) {
-      _moveTemp(_draggedColumn, Location.zero());
-      _moveTemp(_draggedRow, localDelta);
+      _moveInProgress(_draggedColumn, Location.zero());
+      _moveInProgress(_draggedRow, localDelta);
     } else {
-      _moveTemp(_draggedRow, Location.zero());
-      _moveTemp(_draggedColumn, localDelta);
+      _moveInProgress(_draggedRow, Location.zero());
+      _moveInProgress(_draggedColumn, localDelta);
     }
   }
 
@@ -72,12 +72,12 @@ class DragServiceImpl extends DragService {
     return snapToCell ? _snapToCell(localDeltaSnappedToColumnAndRow) : localDeltaSnappedToColumnAndRow;
   }
 
-  void _moveTemp(List<Box> boxes, Location delta) {
+  void _moveInProgress(List<Box> boxes, Location delta) {
     for (final box in boxes) {
       box.moveTemp(delta);
     }
 
-    moveMade!(false);
+    moveInProgress!();
   }
 
   void _moveFinal(List<Box> boxes, Location delta) {
@@ -85,7 +85,7 @@ class DragServiceImpl extends DragService {
       box.moveByDelta(delta);
     }
 
-    moveMade!(true);
+    moveMade!();
   }
 
   _snapToCell(Location localLocation) => Location.fromInt(localLocation.dx.round(), localLocation.dy.round());

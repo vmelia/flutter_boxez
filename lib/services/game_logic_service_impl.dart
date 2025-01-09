@@ -7,17 +7,18 @@ class GameLogicServiceImpl extends GameLogicService {
   final LoggerService loggerService;
 
   @override
-  bool removeContiguousBoxes() {
+  Set<Box> removeContiguousBoxes() {
     Set<Box> boxesToRemove = <Box>{};
     final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
     boxesToRemove.addAll(columnBoxes);
     final rowBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllRows());
     boxesToRemove.addAll(rowBoxes);
 
-    if (boxesToRemove.isEmpty) return false;
+    if (boxesToRemove.isNotEmpty) {
+      gameDataService.removeBoxes(boxesToRemove);
+    }
 
-    gameDataService.removeBoxes(boxesToRemove);
-    return true;
+    return boxesToRemove;
   }
 
   @override
@@ -84,7 +85,7 @@ class GameLogicServiceImpl extends GameLogicService {
         gridLocations.add(Pos(x, y));
       }
     }
-    
+
     gridLocations.sort((a, b) => (a.x * a.y).abs().compareTo((b.x * b.y).abs()));
     return gridLocations;
   }
