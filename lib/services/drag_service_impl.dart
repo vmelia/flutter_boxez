@@ -77,7 +77,7 @@ class DragServiceImpl extends DragService {
       box.moveTemp(delta);
     }
 
-    refresh!(false);
+    moveMade!(false);
   }
 
   void _moveFinal(List<Box> boxes, Location delta) {
@@ -85,7 +85,7 @@ class DragServiceImpl extends DragService {
       box.moveByDelta(delta);
     }
 
-    refresh!(true);
+    moveMade!(true);
   }
 
   _snapToCell(Location localLocation) => Location.fromInt(localLocation.dx.round(), localLocation.dy.round());

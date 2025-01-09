@@ -10,8 +10,6 @@ class BoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dx = box.location.dx;
-    final dy = box.location.dy;
     return AnimatedPositioned.fromRect(
       key: Key(box.index.toString()),
       duration: isDragging ? Duration.zero : Duration(milliseconds: 1000),
@@ -19,26 +17,38 @@ class BoxWidget extends StatelessWidget {
       rect: WidgetHelper.getRect(box.location, context),
       child: Padding(
         padding: EdgeInsets.all(Constants.boxPadding),
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
-                    Colours.convertToColour(box.value),
-                  ],
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
-              ),
-            ),
-            Text('($dx, $dy)\n${box.index}'),
-          ],
-        ),
+        child: _BoxWidgetView(box: box),
       ),
+    );
+  }
+}
+
+class _BoxWidgetView extends StatelessWidget {
+  const _BoxWidgetView({required this.box});
+  final Box box;
+
+  @override
+  Widget build(BuildContext context) {
+    // final dx = box.location.dx;
+    // final dy = box.location.dy;
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colours.convertToColour(box.value).withAlpha(Constants.boxGradientAlpha),
+                Colours.convertToColour(box.value),
+              ],
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(Constants.boxRadius)),
+          ),
+        ),
+        //Text('($dx, $dy)\n${box.index}'),
+      ],
     );
   }
 }

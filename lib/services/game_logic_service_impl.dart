@@ -8,7 +8,6 @@ class GameLogicServiceImpl extends GameLogicService {
 
   @override
   bool removeContiguousBoxes() {
-    //loggerService.info('removeContiguousBoxes()');
     Set<Box> boxesToRemove = <Box>{};
     final columnBoxes = _removeContiguousBoxesInColumnsOrRows(gameDataService.getAllColumns());
     boxesToRemove.addAll(columnBoxes);
@@ -23,16 +22,13 @@ class GameLogicServiceImpl extends GameLogicService {
 
   @override
   bool collapseToCentre() {
-    //loggerService.info('collapseToCentre()');
-    final max = gameDataService.getMaximumDxDyValue();
-    loggerService.info('collapseToCentre() - 0..$max');
+    // Get potential box locations.
+    final gridLocations = _getGridLocations();
     bool anyChanges = false;
-    for (int x = 0; x <= max; x++) {
-      for (int y = 0; y <= max; y++) {
-        if (x > 0 || y > 0) {
-          final changed = _checkTwelveLocations(Pos(x, y));
-          anyChanges = anyChanges || changed;
-        }
+    for (final pos in gridLocations) {
+      if (pos.x > 0 || pos.y > 0) {
+        final changed = _checkTwelveLocations(pos);
+        anyChanges = anyChanges || changed;
       }
     }
 
@@ -41,7 +37,6 @@ class GameLogicServiceImpl extends GameLogicService {
 
   // removeContiguousBoxes
   Set<Box> _removeContiguousBoxesInColumnsOrRows(Iterable<List<Box>> allColumnsOrRows) {
-    //loggerService.info('_removeContiguousBoxesInColumnsOrRows()');
     final boxesToRemove = <Box>{};
     for (final columnOrRow in allColumnsOrRows) {
       Box? lastBox;
@@ -79,6 +74,21 @@ class GameLogicServiceImpl extends GameLogicService {
   }
 
   // collapseToCentre
+  List<Pos> _getGridLocations() {
+    final max = gameDataService.getMaximumDxDyValue();
+    loggerService.info('_getGridLocations() - 0..$max');
+
+    final gridLocations = <Pos>[];
+    for (int x = 0; x <= max; x++) {
+      for (int y = 0; y <= max; y++) {
+        gridLocations.add(Pos(x, y));
+      }
+    }
+    
+    gridLocations.sort((a, b) => (a.x * a.y).abs().compareTo((b.x * b.y).abs()));
+    return gridLocations;
+  }
+
   bool _checkTwelveLocations(Pos pos) {
     if (pos.x == 0 && pos.y == 0) return false; // Cannot improve.
     //loggerService.info('_checkTwelveLocations(${pos.x}, ${pos.y})');

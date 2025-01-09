@@ -7,10 +7,10 @@ class Colours {
 
   static const List<MaterialColor> _colours = <MaterialColor>[
     Colors.red,
-    Colors.orange,
+    // Colors.orange,
     Colors.yellow,
     Colors.green,
     Colors.blue,
-    Colors.purple,
+    // Colors.purple,
   ];
 }
