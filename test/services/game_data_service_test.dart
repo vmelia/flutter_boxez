@@ -84,18 +84,6 @@ void main() {
     });
   });
 
-  group('remove', () {
-    test('removes box from boxes', () {
-      addThreeBoxes();
-
-      gameDataService.remove(box1);
-
-      expect(gameDataService.game.boxes.length, 2);
-      expect(gameDataService.game.boxes.toList()[0], box0);
-      expect(gameDataService.game.boxes.toList()[1], box2);
-    });
-  });
-
   group('removeBoxes', () {
     test('removes boxes correctly', () {
       addThreeBoxes();

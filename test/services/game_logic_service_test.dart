@@ -133,9 +133,6 @@ class MockGameDataService extends GameDataService {
   List<Box> getSelectedRow(int index) => [];
 
   @override
-  void remove(Box box) {}
-
-  @override
   void markBoxesForRemoval(Set<Box> updates) => removed = updates;
 }
 

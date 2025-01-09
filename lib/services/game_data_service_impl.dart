@@ -36,9 +36,6 @@ class GameDataServiceImpl extends GameDataService {
   void add(Box box) => _game.boxes.add(box);
 
   @override
-  void remove(Box box) => _game.boxes.remove(box);
-
-  @override
   void markBoxesForRemoval(Set<Box> updates) {
     _game.boxes.removeWhere((box) => updates.contains(box));
   }
