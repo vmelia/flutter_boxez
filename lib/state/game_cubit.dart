@@ -46,18 +46,20 @@ class GameCubit extends Cubit<GameState> {
   void _moveMade() {
     _emitDoneGameState();
 
-    Set<Box> boxesRemoved;
+    bool boxesRemoved;
     var anyChanges = false;
     do {
       boxesRemoved = gameLogicService.removeContiguousBoxes();
-      if (boxesRemoved.isNotEmpty) {
-        _emitExplodingGameState(boxesRemoved.toList());
+      if (boxesRemoved) {
+        _emitDoneGameState();
+        gameDataService.removeMarkedBoxes();
+        _emitDoneGameState();
         anyChanges = gameLogicService.collapseToCentre();
         if (anyChanges) {
           _emitDoneGameState();
         }
       }
-    } while (boxesRemoved.isNotEmpty && anyChanges);
+    } while (boxesRemoved && anyChanges);
   }
 
   void _emitDraggingGameState() {
@@ -66,11 +68,6 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void _emitDoneGameState() {
-    emit(GameState.initial());
-    emit(GameState(game: gameDataService.game, isDragging: false));
-  }
-
-  void _emitExplodingGameState(List<Box> removedBoxes) {
     emit(GameState.initial());
     emit(GameState(game: gameDataService.game, isDragging: false));
   }

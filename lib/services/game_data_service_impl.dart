@@ -37,7 +37,15 @@ class GameDataServiceImpl extends GameDataService {
 
   @override
   void markBoxesForRemoval(Set<Box> updates) {
-    _game.boxes.removeWhere((box) => updates.contains(box));
+    for (var box in updates) {
+      box.markForRemoval();
+    }
+  }
+
+  @override
+  void removeMarkedBoxes() {
+    final marked = _getBoxesMarkedForRemoval();
+    _game.boxes.removeWhere((b) => marked.contains(b));
   }
 
   @override
@@ -86,5 +94,16 @@ class GameDataServiceImpl extends GameDataService {
     }
 
     return map.values;
+  }
+
+  List<Box> _getBoxesMarkedForRemoval() {
+    final list = <Box>[];
+    for (final box in game.boxes) {
+      if (box.markedForRemoval) {
+        list.add(box);
+      }
+    }
+
+    return list;
   }
 }

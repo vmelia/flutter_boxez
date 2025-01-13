@@ -134,6 +134,9 @@ class MockGameDataService extends GameDataService {
 
   @override
   void markBoxesForRemoval(Set<Box> updates) => removed = updates;
+
+  @override
+  void removeMarkedBoxes() {}
 }
 
 class MockLoggerService extends LoggerService {

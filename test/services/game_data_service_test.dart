@@ -73,6 +73,25 @@ void main() {
     });
   });
 
+  group('getMaximumDxDyValue', () {
+    test('return correct value for positive x', () {
+      addThreeBoxes();
+      box0.moveAbsolute(Location(0, 0));
+      box0.moveAbsolute(Location(-1, -1));
+      box0.moveAbsolute(Location(4, 1));
+
+      final result = gameDataService.getMaximumDxDyValue();
+
+      expect(result, 4);
+    });
+
+    test('returns null when not found', () {
+      final result = gameDataService.findByLocation(Location(1, 1));
+
+      expect(result, null);
+    });
+  });
+
   group('add', () {
     test('adds box to boxes', () {
       addThreeBoxes();
@@ -84,11 +103,25 @@ void main() {
     });
   });
 
-  group('removeBoxes', () {
-    test('removes boxes correctly', () {
+  group('markBoxesForRemoval', () {
+    test('marks boxes correctly', () {
       addThreeBoxes();
 
       gameDataService.markBoxesForRemoval({box0, box2});
+
+      expect(gameDataService.game.boxes.length, 3); // None removed yet.
+      expect(gameDataService.game.boxes[0].markedForRemoval, true);
+      expect(gameDataService.game.boxes[1].markedForRemoval, false);
+      expect(gameDataService.game.boxes[2].markedForRemoval, true);
+    });
+  });
+
+  group('removeMarkedBoxes', () {
+    test('removes marks boxes correctly', () {
+      addThreeBoxes();
+      gameDataService.markBoxesForRemoval({box0, box2});
+
+      gameDataService.removeMarkedBoxes();
 
       expect(gameDataService.game.boxes.length, 1);
       expect(gameDataService.game.boxes.toList()[0], box1); // Unchanged.

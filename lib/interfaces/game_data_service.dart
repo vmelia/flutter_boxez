@@ -10,7 +10,9 @@ abstract class GameDataService {
   int getMaximumDxDyValue();
 
   void add(Box box);
+  
   void markBoxesForRemoval(Set<Box> updates);
+  void removeMarkedBoxes();
 
   // Returns a map of boxes that are in the same column/row as the index.
   // The mapped key is the original location of the box - so we can reset if required.
