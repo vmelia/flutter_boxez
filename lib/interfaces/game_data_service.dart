@@ -20,6 +20,6 @@ abstract class GameDataService {
   List<Box> getSelectedRow(int index);
 
   // Returns a list of all columns/row.
-  Iterable<List<Box>> getAllColumns();
-  Iterable<List<Box>> getAllRows();
+  List<List<Box>> getAllColumns();
+  List<List<Box>> getAllRows();
 }

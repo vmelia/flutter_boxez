@@ -6,11 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late GameDataService gameDataService;
 
-  setUp(() {
-    gameDataService = GameDataServiceImpl();
-    gameDataService.createEmptyGame();
-  });
-
   // Test game.
   // -------------
   // | 0 | 2 | 0 |
@@ -19,19 +14,34 @@ void main() {
   // -------------
   // | 0 | 2 | 0 |
   // -------------
-  final box0 = Box(0, Location(-1, -1), 0);
-  final box1 = Box(1, Location(0, -1), 2);
-  final box2 = Box(2, Location(1, -1), 0);
+  late Box box0;
+  late Box box1;
+  late Box box2;
+  late Box box3;
+  late Box box4;
+  late Box box5;
+  late Box box6;
+  late Box box7;
+  late Box box8;
 
-  final box3 = Box(3, Location(-1, 0), 2);
-  final box4 = Box(4, Location(0, 0), 4);
-  final box5 = Box(5, Location(1, 0), 2);
-
-  final box6 = Box(6, Location(-1, 1), 0);
-  final box7 = Box(7, Location(0, 1), 2);
-  final box8 = Box(9, Location(1, 1), 0);
+  setUp(() {
+    gameDataService = GameDataServiceImpl();
+    gameDataService.createEmptyGame();
+  });
 
   void createTestGame() {
+    box0 = Box(0, Location(-1, -1), 0);
+    box1 = Box(1, Location(0, -1), 2);
+    box2 = Box(2, Location(1, -1), 0);
+
+    box3 = Box(3, Location(-1, 0), 2);
+    box4 = Box(4, Location(0, 0), 4);
+    box5 = Box(5, Location(1, 0), 2);
+
+    box6 = Box(6, Location(-1, 1), 0);
+    box7 = Box(7, Location(0, 1), 2);
+    box8 = Box(8, Location(1, 1), 0);
+
     gameDataService.add(box0);
     gameDataService.add(box1);
     gameDataService.add(box2);
@@ -46,6 +56,9 @@ void main() {
   // Adds boxes with index 0..2.
   // Offsets (-1..1, -1).
   void addThreeBoxes() {
+    box0 = Box(0, Location(-1, -1), 0);
+    box1 = Box(1, Location(0, -1), 2);
+    box2 = Box(2, Location(1, -1), 0);
     gameDataService.add(box0);
     gameDataService.add(box1);
     gameDataService.add(box2);
@@ -157,24 +170,24 @@ void main() {
     test('returns all columns', () {
       createTestGame();
 
-      final result = gameDataService.getAllColumns();
+      final result = gameDataService.getAllColumns().toList();
 
       expect(result.length, 3);
-      expect(result.toList()[0], [box0, box3, box6]);
-      expect(result.toList()[1], [box1, box4, box7]);
-      expect(result.toList()[2], [box2, box5, box8]);
+      expect(result[0], [box0, box3, box6]);
+      expect(result[1], [box1, box4, box7]);
+      expect(result[2], [box2, box5, box8]);
     });
   });
   group('getAllRows', () {
     test('returns all rows', () {
       createTestGame();
 
-      final result = gameDataService.getAllRows();
+      final result = gameDataService.getAllRows().toList();
 
       expect(result.length, 3);
-      expect(result.toList()[0], [box0, box1, box2]);
-      expect(result.toList()[1], [box3, box4, box5]);
-      expect(result.toList()[2], [box6, box7, box8]);
+      expect(result[0], [box0, box1, box2]);
+      expect(result[1], [box3, box4, box5]);
+      expect(result[2], [box6, box7, box8]);
     });
   });
 }

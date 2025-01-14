@@ -101,8 +101,8 @@ void main() {
 }
 
 class MockGameDataService extends GameDataService {
-  late Iterable<List<Box>> allColumns = List<List<Box>>.empty();
-  late Iterable<List<Box>> allRows = List<List<Box>>.empty();
+  late List<List<Box>> allColumns = List<List<Box>>.empty();
+  late List<List<Box>> allRows = List<List<Box>>.empty();
   late Set<Box> removed = <Box>{};
 
   @override
@@ -121,10 +121,10 @@ class MockGameDataService extends GameDataService {
   Game get game => Game();
 
   @override
-  Iterable<List<Box>> getAllColumns() => allColumns;
+  List<List<Box>> getAllColumns() => allColumns;
 
   @override
-  Iterable<List<Box>> getAllRows() => allRows;
+  List<List<Box>> getAllRows() => allRows;
 
   @override
   List<Box> getSelectedColumn(int index) => [];
